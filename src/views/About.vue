@@ -5,6 +5,7 @@
 </template>
 
 <script>
+	import {listuser, listuser2} from '../service/getData.js'
 	export default{
 		name: 'about',
 		data(){
@@ -17,13 +18,13 @@
 		},
 		mounted(){
 			console.log(this.axios.defaults.baseURL);
-			this.axios.get('/api').then((response) => {
-			  console.log(response);
-			  
+			listuser().then((r) => {
+				console.log(r);
+			})
+			listuser2(1).then((r) => {
+				console.log(r);
 			})
 		}
-		
-
 	}
 </script>
 <style lang='less' scoped>
