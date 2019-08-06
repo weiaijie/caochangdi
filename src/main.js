@@ -4,14 +4,17 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-
+import Vant from 'vant'
+import 'vant/lib/index.css'
 
 
 //配置请求地址
 axios.defaults.baseURL = process.env.VUE_APP_URL;
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
 Vue.use(VueAxios,axios);
+
+Vue.use(Vant);
 
 new Vue({
   router,
