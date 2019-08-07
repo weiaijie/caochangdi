@@ -1,6 +1,6 @@
 <template>
-    <div class="login">
-        <div :model="loginForm">
+    <div class="login_container">
+        <div class="login" :model="loginForm">
             <div class="logo"></div>
             <div class="g_list">
                 <van-cell-group>
@@ -9,7 +9,7 @@
                         clearable
                         placeholder="请输入你的账号" 
                     />
-                </van-cell-group>
+                </van-cell-group> 
                 <van-cell-group>
                     <van-field 
                         v-model="loginForm.password" 
@@ -34,6 +34,7 @@
 
 
 <script>
+import { Toast } from 'vant';
 export default {
     name: 'Login',
     data() {
@@ -47,32 +48,30 @@ export default {
         }
     },
     watch: {
-
+       
     },
     created() {
-        //登陆页颜色
-        document.getElementsByTagName('body')[0].setAttribute('style', 'background:#eee');
+
     },
     mounted() {
-       console.log(this.loginForm.username)
-       console.log(this.$refs.username)
     },
     destroyed() {
-        //跳转回商城 改成黑色
-        document.getElementsByTagName('body')[0].setAttribute('style', 'background:#000');
+
     },
     methods: {
-        rieg() {
-            console.log('1');
-        },
         handleLogin() {
             if(this.loginForm.password !== '111111'){
                 this.$notify('密码错误')
                 this.loginForm.password = ''
             }else{
-                this.show = true
-                this.display = 'block'
-                this.rieg()
+                // this.show = true
+                // this.display = 'block'
+                Toast.loading({
+                  mask: true,
+                  conPrefix: 'van-loading',
+                  message: '登陆中...',
+                  duration: 1000
+                });
                 setTimeout(() => {
                     this.show = false
                     this.$router.push('/')
@@ -85,43 +84,48 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.login{
-    width:320px;
-    padding-top:30px;
-    margin:auto;
+.login_container{
+    position:fixed;
+    width: 100%;
+    height:100%;
     background:#eee;
-    .logo{
-        background-image:url(../../icons/logo.png);
-        height:100px;
-        width:244px;
-        margin:0 auto 20px;
-        background-size:244px 100px;
-
-    }
-    .g_list{
-        width: 290px;
+    .login{
+        width:320px;
+        padding-top:30px;
         margin:auto;
-        border-radius: 4px;
-        overflow:hidden;
+        .logo{
+            background-image:url(../../icons/logo.png);
+            height:100px;
+            width:244px;
+            margin:0 auto 20px;
+            background-size:244px 100px;
 
-    }
-    .van-button{
-        width: 290px;
-        height: 44px;
-        line-height: 44px;
-        background: #146fdf;
-        border: none;
-        border-radius: 4px;
-        color: #fff;
-        font-size: 16px;
-        margin: 15px auto;
-        display: block;
-    }
-    .tip{
-        p{
-            text-align:center;
-            color:red;
-            font-size:15px;
+        }
+        .g_list{
+            width: 290px;
+            margin:auto;
+            border-radius: 4px;
+            overflow:hidden;
+
+        }
+        .van-button{
+            width: 290px;
+            height: 44px;
+            line-height: 44px;
+            background: #146fdf;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            margin: 15px auto;
+            display: block;
+        }
+        .tip{
+            p{
+                text-align:center;
+                color:red;
+                font-size:15px;
+            }
         }
     }
     .van-loading{ 
@@ -129,13 +133,10 @@ export default {
         z-index: 2;
         left:50%;
         top:50%;
-        margin-left:-10px;
-        margin-top:-10px;
+        margin-left:-15px;
+        margin-top:-15px;
     }
-
 }
-
-
 
 </style>
 

@@ -13,17 +13,20 @@
 
 			}
 		},
+		watch: {
+    	    
+    	},
 		created(){
-			
-		},
+        
+    	},
 		mounted(){
-			console.log(this.axios.defaults.baseURL);
-			listuser().then((r) => {
-				console.log(r);
-			})
-			listuser2(1).then((r) => {
-				console.log(r);
-			})
+			// console.log(this.axios.defaults.baseURL);
+			// listuser().then((r) => {
+			// 	console.log(r);
+			// })
+			// listuser2(1).then((r) => {
+			// 	console.log(r);
+			// })
 		}
 	}
 </script>
