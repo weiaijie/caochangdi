@@ -39,6 +39,7 @@ export default {
     max-width:640px;
     margin: 0 auto;
     background:#fff;
+    position:relative;
    
 }
 </style>

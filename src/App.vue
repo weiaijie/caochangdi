@@ -12,9 +12,4 @@ body{
   border:0;
   background:#000;
 }
-#app {
-  max-width: 640px;
-  margin: 0 auto;
-  position: relative;
-}
 </style>
