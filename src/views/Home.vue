@@ -2,9 +2,9 @@
   <div class="home">
     <div class="mod_head_search_home">
       <div class="head_search" @click.once="routerJump('headSearch')">
-	    	<div>
-      		<i class="icon icon_search"></i>
-      		<span class="icon_txt">{{hotSearch}}</span>
+        <div>
+          <i class="icon icon_search"></i>
+          <span class="icon_txt">{{hotSearch}}</span>
         </div>
         <div class="cate_list">
           <span 
@@ -68,7 +68,7 @@
       </div>
     </div>
     
-    <!-- 活动三商品  比如：新品首发 -->
+    <!-- 活动 魔道祖师羨云篇周边 -->
     <div class="mod_section">
       <div class="mod_title">
         <div class="title_inner">
@@ -95,18 +95,98 @@
                 <span class="sign">¥</span><span class="num">{{item.price}}</span>
               </span>
               <i v-if="item.reserve" class="mod_mark_tag mark_tag_normal">预订价</i>
-              <!-- <span v-if="item.priceVip != false" class="mod_price_vip">
+              <span v-if="item.priceVip != false" class="mod_price_vip">
                 <span class="price_tag_bg">
                   <span class="name">VIP价</span>
                 </span>
                 <span class="tag_num">¥{{item.priceVip}}</span>
-              </span> -->
+              </span>
             </span>
           </li>
         </ul>
       </div>
     </div>
-    
+
+    <!-- 新品首发 -->
+    <div class="mod_section">
+      <div class="mod_title">
+        <div class="title_inner">
+          <h3 class="tit_center">
+              <span class="tit">首发新品</span>
+              <van-icon name="arrow" size="20" class="icon icon_more" @click.once="routerJump('ip_products?ipId=230')" />
+          </h3>
+        </div>
+      </div>
+      <div class="mod_goods mod_goods_v">
+        <ul class="goods_list">
+          <li class="list_item" 
+            v-for="item in goods.firstGoods"
+            :key="item.id"
+            @click.once="routerJump('商品id: ' + item.id)"
+            >
+            <span class="item_link">
+              <span class="goods_pic">
+                <img class="pic" :src="item.imgUrl">
+              </span>
+              <span class="goods_ip">「<span class="name">{{item.name}}</span>」</span>
+              <span class="goods_title goods_title_multirow"><span class="txt">{{item.title}}</span></span>
+              <span class="mod_goods_price" r-notemplate="true">
+                <span class="sign">¥</span><span class="num">{{item.price}}</span>
+              </span>
+              <i v-if="item.reserve" class="mod_mark_tag mark_tag_normal">早鸟</i>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 秒杀模块 -->
+    <div class="mod_section">
+      <div class="mod_spike_list">
+        <div class="spike_list"></div>
+      </div>
+    </div>
+
+    <!-- 热销单品 -->
+    <div class="mod_section">
+      <div class="mod_title">
+        <div class="title_inner">
+          <h3 class="tit_center">
+              <span class="tit">热销单品</span>
+              <van-icon name="arrow" size="20" class="icon icon_more" @click.once="routerJump('ip_products?ipId=230')" />
+          </h3>
+        </div>
+      </div>
+      <div class="mod_goods mod_goods_v">
+        <ul class="goods_list">
+          <li class="list_item" 
+            v-for="item in goods.hotGoods"
+            :key="item.id"
+            @click.once="routerJump('商品id: ' + item.id)"
+            >
+            <span class="item_link">
+              <span class="goods_pic">
+                <img class="pic" :src="item.imgUrl">
+              </span>
+              <span class="goods_ip">「<span class="name">{{item.name}}</span>」</span>
+              <span class="goods_title goods_title_multirow"><span class="txt">{{item.title}}</span></span>
+              <span class="mod_goods_price" r-notemplate="true">
+                <span class="sign">¥</span><span class="num">{{item.price}}</span>
+              </span>
+              <i v-if="item.reserve" class="mod_mark_tag mark_tag_normal">限时折扣</i>
+              <span v-if="item.priceVip != false" class="mod_price_vip">
+                <span class="price_tag_bg">
+                  <span class="name">VIP价</span>
+                </span>
+                <span class="tag_num">¥{{item.priceVip}}</span>
+              </span>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -212,7 +292,9 @@ export default {
         ]
       },
       goods: {
-        activityGoods: []
+        activityGoods: [],
+        firstGoods: [],
+        hotGoods: []
       }
     }
   },
@@ -220,32 +302,77 @@ export default {
 
   },
   created(){
+    //<!-- 活动 魔道祖师羨云篇周边 -->
     for(let i = 0; i < 9; i++){
-      this.goods.activityGoods[i] = {
+      this.goods.activityGoods.push({
         id: i,
         imgUrl: require(`../icons/goods/480_480(${i+1}).png`),
         name: '魔道祖师',
         title: '开播纪念版会员卡组',
         price: Math.floor((Math.random()*300) + 10),
+        //随机预约价
         reserve: (() => {
           if(Math.floor((Math.random()*10) + 1) >= 9){
             return true
           }
           return false
         })(),
-        // priceVip: ((i) => {
-        // // if(Math.floor((Math.random()*10) + 1) >= 7){
-        // //   return this.price - 1
-        // // }
-        // // return false
-        // return i
-        // })(this)
-      }
-      // console.log(this.goods.activityGoods[i].priceVip)
-      // console.log(this.goods.activityGoods[i].id)
+        priceVip: ''
+      })
+      //随机vip价格
+      this.goods.activityGoods[i].priceVip = (() => {
+        if(Math.floor((Math.random()*10) + 1) >= 7){
+          return this.goods.activityGoods[i].price - Math.floor((Math.random()*10) + 1)
+        }
+        return false
+      })()
+    }
+
+    // <!-- 新品首发 -->
+    for(let i = 9; i < 15; i++){
+      this.goods.firstGoods.push({
+        id: i,
+        imgUrl: require(`../icons/goods/480_480(${i+1}).png`),
+        name: '魔道祖师',
+        title: '开播纪念版会员卡组',
+        price: Math.floor((Math.random()*300) + 10),
+        //随机早鸟
+        reserve: (() => {
+          if(Math.floor((Math.random()*10) + 1) >= 9){
+            return true
+          }
+          return false
+        })()
+      })
+    }
+
+    //<!-- 热销单品 -->
+    for(let i = 15; i < 21; i++){
+      this.goods.hotGoods.push({
+        id: i,
+        imgUrl: require(`../icons/goods/480_480(${i+1}).png`),
+        name: '魔道祖师',
+        title: '开播纪念版会员卡组',
+        price: Math.floor((Math.random()*300) + 10),
+        //随机限时折扣
+        reserve: (() => {
+          if(Math.floor((Math.random()*10) + 1) >= 9){
+            return true
+          }
+          return false
+        })(),
+        priceVip: ''
+      })
+      //随机vip价格
+      this.goods.hotGoods[i-15].priceVip = (() => {
+        if(Math.floor((Math.random()*10) + 1) >= 7){
+          return this.goods.hotGoods[i-15].price - Math.floor((Math.random()*10) + 1)
+        }
+        return false
+        console.log(this.goods.hotGoods[i-15].price)
+      })()
     }
     
-    console.log(this.goods.activityGoods)
   },
   mounted(){
 
@@ -443,6 +570,9 @@ export default {
   .mod_channel_nav {
     margin: 0 15px 6px;
     background: #fff;
+    span{
+      display:block;
+    }
     .nav_item {
       -webkit-flex: 1 1 auto;
       flex: 1 1 auto;
