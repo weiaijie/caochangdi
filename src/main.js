@@ -14,7 +14,6 @@ axios.defaults.baseURL = process.env.VUE_APP_URL;
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
 Vue.use(VueAxios,axios);
-
 Vue.use(Vant);
 
 
