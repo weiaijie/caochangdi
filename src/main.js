@@ -6,7 +6,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Vant from 'vant'
 import 'vant/lib/index.css'
-import './style/common.less';
+import './style/common.less'
 
 
 //配置请求地址
@@ -15,7 +15,6 @@ Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
 Vue.use(VueAxios,axios);
 Vue.use(Vant);
-
 
 new Vue({
   router,
