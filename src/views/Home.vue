@@ -161,12 +161,12 @@
           </div>
 
           <div class="list_item">
-            <div class="num num_index_1" v-text="goods.countDown.futureTime1"></div>
+            <div class="num" v-text="goods.countDown.futureTime1"></div>
             <div class="txt" v-if="goods.countDown.time">即将开始</div>
             <div v-else>秒杀已结束</div>
           </div>
           <div class="list_item">
-            <div class="num num_index_1" v-text="goods.countDown.futureTime2"></div>
+            <div class="num" v-text="goods.countDown.futureTime2"></div>
             <div class="txt" v-if="goods.countDown.futureTime1 == '10:00'">
               秒杀预告
             </div>
@@ -178,28 +178,33 @@
       </div>
 
       <div class="mod_goods mod_goods_v mod_goods_v_spike">
-        <div class="goods_list current">
-          <ul class="goods_list">
-            <li class="list_item" 
-              v-for="item in goods.firstGoods"
-              :key="item.id"
-              @click.once="routerJump('商品id: ' + item.id)"
-              >
-              <span class="item_link">
-                <span class="goods_pic">
-                  <img class="pic" :src="item.imgUrl">
-                </span>
-                <span class="goods_ip">「<span class="name">{{item.name}}</span>」</span>
-                <span class="goods_title goods_title_multirow"><span class="txt">{{item.title}}</span></span>
-                <span class="mod_goods_price" r-notemplate="true">
-                  <span class="sign">¥</span><span class="num">{{item.price}}</span>
-                </span>
-                <i v-if="item.reserve" class="mod_mark_tag mark_tag_spike">秒杀</i>
+        <ul class="goods_list"
+          v-for="(items, index) in goods.spikeGoods" 
+          :key="index" 
+          :style="goods.countDown.spikeIndex == index ? 'display:block ' : 'display:none'"
+          >
+          <li class="list_item" 
+            v-for="item in items"
+            :key="item.id"
+            @click.once="routerJump('商品id: ' + item.id)"
+            >
+            <span class="item_link">
+              <span class="goods_pic">
+                <img class="pic" :src="item.imgUrl">
+                <img v-if="index !== 0" class="mark_sub_sale" src="../icons/svg/mark_sub_nostart.svg">
               </span>
-            </li>
-          </ul>
-        </div>
+              <span class="goods_ip">「<span class="name">{{item.name}}</span>」</span>
+              <span class="goods_title goods_title_multirow"><span class="txt">{{item.title}}</span></span>
+              <span class="mod_goods_price" r-notemplate="true">
+                <span class="sign">¥</span><span class="num">{{item.spikePrice}}</span>
+              </span>
+              <i class="mod_mark_tag mark_tag_spike">秒杀</i>
+              <span class="price_ori">{{item.price}}</span>
+            </span>
+          </li>
+        </ul>
       </div>
+
     </div>
 
     <!-- 热销单品 -->
@@ -249,6 +254,7 @@
 <script>
 import { format } from 'path';
 import { setTimeout, setInterval } from 'timers';
+import { formatWithOptions } from 'util';
 export default {
   name: 'home',
   components: {
@@ -353,10 +359,16 @@ export default {
         countDown: {
           time: 10000000,
           futureTime1: '10:00',
-          futureTime2: '20:00'
+          futureTime2: '20:00',
+          spikeIndex:'0'
         },
+        spikeGoods: [
+          [],
+          [],
+          []
+        ],
         hotGoods: []
-          
+
       }
     }
   },
@@ -439,12 +451,42 @@ export default {
     //秒杀活动 时间获取
     let a = new Date()
     console.clear()
-    console.log(a.getHours())
     if(a.getHours() >= 10 && a.getHours() < 20){
       this.goods.countDown.futureTime1 = '20:00'
       this.goods.countDown.futureTime2 = '10:00'
     }
     this.goods.countDown.time = Date.parse(new Date(`${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${this.goods.countDown.futureTime1}`)) - a.getTime()
+
+    //秒杀活动 商品
+    let o = 21
+    for(let j = 0; j < this.goods.spikeGoods.length; j++){
+      let l = o + 3 
+      let v = 0
+      for(let i = o; i < l; i++){
+        this.goods.spikeGoods[j].push({
+          id: i,
+          imgUrl: require(`../icons/goods/480_480(${i+1}).png`),
+          name: '魔道祖师',
+          title: '开播纪念版会员卡组',
+          price: Math.floor((Math.random()*320) + 10),
+          //随机限时折扣
+          reserve: (() => {
+            if(Math.floor((Math.random()*10) + 1) >= 9){
+              return true
+            }
+            return false
+          })(),
+          spikePrice: ''
+        })
+        //随机秒杀价格
+        this.goods.spikeGoods[j][v].spikePrice = (() => {
+          return Math.floor(this.goods.spikeGoods[j][v].price * (Math.floor((Math.random() * 9) + 1) / 10))
+        })()
+        o = i
+        v++
+      }
+    }
+    console.log(this.goods.spikeGoods)
   },
   mounted(){
 
@@ -461,12 +503,19 @@ export default {
       for(let i = 0; i < dom.length; i++){
         dom[i].classList.remove('current')
       }
-      if(e.target.offsetParent.className.search('list_item') != -1){
-        e.target.offsetParent.className += " current"
-      }else if(e.target.className.search('list_item') != -1){
-        e.target.className +=" current"
+      let evn = e.target
+      for(let i = 0; i < 5; i++){
+        if(evn.className.search('list_item') != -1){
+           evn.classList.add("current")
+           break;
+        }
+        evn = evn.parentElement
       }
-     
+     for(let i = 0; i < dom.length; i++){
+        if(dom[i].className.search('current') != -1){
+          this.goods.countDown.spikeIndex = i
+        }
+      }
     }
   }
 }
@@ -930,6 +979,8 @@ export default {
 
 }
 
+
+//秒杀
 .mod_spike_list {
     margin-bottom: 8px;
     display: flex;
@@ -1034,5 +1085,23 @@ export default {
       }
     }
 }
-
+.price_ori {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 12px;
+  line-height: 14px;
+  height: 14px;
+  color: #999;
+  text-decoration: line-through;
+  letter-spacing: normal;
+  margin: 4px 0 0 0;
+}
+.mark_sub_sale {
+    position: absolute;
+    pointer-events: none;
+    right: -5px;
+    top: -5px;
+    width: 44px;
+    height: 35px;
+}
 </style>
