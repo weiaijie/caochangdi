@@ -357,7 +357,7 @@ export default {
         activityGoods: [],
         firstGoods: [],
         countDown: {
-          time: 10000000,
+          time: '',
           futureTime1: '10:00',
           futureTime2: '20:00',
           spikeIndex:'0'
