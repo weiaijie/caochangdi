@@ -32,11 +32,13 @@
           :key='item.alt' 
           :data-swiper-slide-index='item.alt'
           @click.once="routerJump(item.href)"
+          v-lazy-container="{loading: './img/svg/banner.svg', error: './img/svg/banner.svg'}"
           >
-          <img :src="item.url" :alt="item.alt">
+          <img :data-src="item.url">
+          <!-- <img :data-src="item.url" src="../icons/svg/banner.png" > -->
+          <!-- v-lazy-container="{loading: './img/svg/banner.png', error: './img/svg/banner.png'}" -->
         </van-swipe-item>
         <div class="custom-indicator" >
-            <!-- <i class="" v-for="item in modSwiperCards" :key="item.alt">{{item.alt}}</i> -->
         </div>
       </van-swipe>
       <div class="swiper_mask">
@@ -305,6 +307,7 @@ import { format } from 'path';
 import { setTimeout, setInterval } from 'timers';
 import { formatWithOptions } from 'util';
 import { constants } from 'crypto';
+
 export default {
   name: 'home',
   components: {
@@ -329,27 +332,27 @@ export default {
       modSwiperCards: [
         {
           alt: '1',
-          url: require('../icons/mod_swiper_card1.png'),
+          url: './img/mod_swiper_card1.png',
           href: 'mod_swiper_card1'
         },
         {
           alt: '2',
-          url: require('../icons/mod_swiper_card2.png'),
+          url: './img/mod_swiper_card2.png',
           href: 'mod_swiper_card2'
         },
         {
           alt: '3',
-          url: require('../icons/mod_swiper_card3.png'),
+          url: './img/mod_swiper_card3.png',
           href: 'mod_swiper_card3'
         },
         {
           alt: '4',
-          url: require('../icons/mod_swiper_card4.png'),
+          url: './img/mod_swiper_card4.png',
           href: 'mod_swiper_card4'
         },
         {
           alt: '5',
-          url: require('../icons/mod_swiper_card5.png'),
+          url: './img/mod_swiper_card5.png',
           href: 'mod_swiper_card5'
         }
       ],
@@ -358,47 +361,47 @@ export default {
           {
             title: '今日上新',
             meta: '就问你来不来',
-            imgUrl: require('../icons/mod_channel_nav1.png'),
+            imgUrl: './img/mod_channel_nav1.png',
             href:'1'
           },
           {
             title: '腾讯独家',
             meta: '宇宙仅此一家',
-            imgUrl: require('../icons/mod_channel_nav2.png'),
+            imgUrl: './img/mod_channel_nav2.png',
             href:'2'
           },
           {
             title: '手办专区',
             meta: '买手办到咩家',
-            imgUrl: require('../icons/mod_channel_nav3.png'),
+            imgUrl: './img/mod_channel_nav3.png',
             href:'3'
           },
           {
             title: '原著读物',
             meta: '热剧抢先看',
-            imgUrl: require('../icons/mod_channel_nav4.png'),
+            imgUrl: './img/mod_channel_nav4.png',
             href:'4'
           }
         ],
         ipList: [
           {
             title: '魔道祖师',
-            imgUrl: require('../icons/mod_channel_nav5.png'),
+            imgUrl: './img/mod_channel_nav5.png',
             href:'5'
           },
           {
             title: 'QQ黄金鹅',
-            imgUrl: require('../icons/mod_channel_nav6.png'),
+            imgUrl: './img/mod_channel_nav6.png',
             href:'6'
           },
           {
             title: '陈情令年卡',
-            imgUrl: require('../icons/mod_channel_nav7.png'),
+            imgUrl: './img/mod_channel_nav7.png',
             href:'7'
           },
           {
             title: '早鸟票',
-            imgUrl: require('../icons/mod_channel_nav8.png'),
+            imgUrl: './img/mod_channel_nav8.png',
             href:'8'
           }
         ]
@@ -418,7 +421,9 @@ export default {
           []
         ],
         hotGoods: [],
-        moreGoods: []
+        moreGoods: {
+          length: 50
+        }
       },
       moreGoodsid: 0,
       loading: false,
@@ -434,7 +439,7 @@ export default {
     for(let i = 0; i < 9; i++){
       this.goods.activityGoods.push({
         id: i,
-        imgUrl: require(`../icons/goods/480_480(${i+1}).png`),
+        imgUrl: `./img/goods/480_480(${i+1}).png`,
         name: '魔道祖师',
         title: '开播纪念版会员卡组',
         price: Math.floor((Math.random()*300) + 10),
@@ -460,7 +465,7 @@ export default {
     for(let i = 9; i < 15; i++){
       this.goods.firstGoods.push({
         id: i,
-        imgUrl: require(`../icons/goods/480_480(${i+1}).png`),
+        imgUrl: `./img/goods/480_480(${i+1}).png`,
         name: '魔道祖师',
         title: '开播纪念版会员卡组',
         price: Math.floor((Math.random()*300) + 10),
@@ -478,7 +483,7 @@ export default {
     for(let i = 15; i < 21; i++){
       this.goods.hotGoods.push({
         id: i,
-        imgUrl: require(`../icons/goods/480_480(${i+1}).png`),
+        imgUrl: `./img/goods/480_480(${i+1}).png`,
         name: '魔道祖师',
         title: '开播纪念版会员卡组',
         price: Math.floor((Math.random()*300) + 10),
@@ -518,7 +523,7 @@ export default {
       for(let i = o; i < l; i++){
         this.goods.spikeGoods[j].push({
           id: i,
-          imgUrl: require(`../icons/goods/480_480(${i+1}).png`),
+          imgUrl: `./img/goods/480_480(${i+1}).png`,
           name: '魔道祖师',
           title: '开播纪念版会员卡组',
           price: Math.floor((Math.random()*320) + 10),
@@ -540,6 +545,11 @@ export default {
       }
     }
 
+    this.axios.get("img/svg/banner.svg").then((r) => {
+      console.log("成功")
+    }).catch((e) => {
+      console.log("失败")
+    })
   },
   mounted(){
 
@@ -586,7 +596,7 @@ export default {
         for(let i = 0; i < 3; i++){
           this.goods.spikeGoods[2].push({
             id: i,
-            imgUrl: require(`../icons/goods/480_480(${i+1}).png`),
+            imgUrl: `./img/goods/480_480(${i+1}).png`,
             name: '陈情令',
             title: '开播纪念版会员卡组',
             price: Math.floor((Math.random()*320) + 10),
@@ -616,7 +626,7 @@ export default {
         for(let i = this.goods.moreGoods.length; i < j; i++){
           this.goods.moreGoods.push({
             id: i,
-            imgUrl: require(`../icons/goods/480_480(${i+1}).png`),
+            imgUrl: `./img/goods/480_480(${i+1}).png`,
             name: '魔道祖师',
             title: '开播纪念版会员卡组',
             price: Math.floor((Math.random()*300) + 10),
@@ -1050,7 +1060,7 @@ export default {
       vertical-align: top;
       font-size: 10px;
       letter-spacing: 0;
-      line-height: 14px;
+      line-height: 16px;
       height: 14px;
       display: inline-block;
       padding: 0 2px;

@@ -1,19 +1,17 @@
 <template>
     <div class='index'>
         <router-view/>
-        <div id="nav">
-          <router-link to="/home">Home</router-link> |
-          <router-link to="/about">About</router-link> |
-          <router-link to="/login">login</router-link>
-        </div>
+        <hr style="border:0; height:50px;background-color:#fff;">
+        <MenuFixed></MenuFixed>
     </div>
 </template>
 
 <script>
+import MenuFixed from './components/menu-fixed';
 export default {
     name: 'Index',
     components: {
-
+        MenuFixed
     },
     data() {
         return{
