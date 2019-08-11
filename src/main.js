@@ -21,7 +21,7 @@ Vue.use(VueAxios,axios);
 Vue.use(Vant)
 Vue.use(Lazyload,{
   fade: true,
-  time: 500
+  time: 300
 })
 
 Vue.use(Vuelazyload,{
