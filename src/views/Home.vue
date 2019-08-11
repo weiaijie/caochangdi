@@ -51,7 +51,7 @@
         <div class="nav_list">
           <div class="nav_item" v-for="item in modChannelNav.navList" :key="item.title" @click.once="routerJump(item.href)">
               <span class="icon_ml">
-                  <img :src="item.imgUrl" :alt="item.title">
+                  <img v-lazy="item.imgUrl" :alt="item.title">
               </span>
               <span class="icon_txt">{{item.title}}</span>
               <span class="icon_desc">{{item.meta}}</span>
@@ -60,7 +60,7 @@
         <div class="ip_list">
           <div class="nav_item" v-for="item in modChannelNav.ipList" :key="item.title" @click.once="routerJump(item.href)">
               <span class="icon_ml">
-                  <img :src="item.imgUrl" :alt="item.title">
+                  <img v-lazy="item.imgUrl" :alt="item.title">
               </span>
               <span class="icon_txt">{{item.title}}</span>
           </div>
@@ -87,7 +87,7 @@
             >
             <span class="item_link">
               <span class="goods_pic">
-                <img class="pic" :src="item.imgUrl">
+                <img class="pic" v-lazy="item.imgUrl">
               </span>
               <span class="goods_ip">「<span class="name">{{item.name}}</span>」</span>
               <span class="goods_title goods_title_multirow"><span class="txt">{{item.title}}</span></span>
@@ -126,7 +126,7 @@
             >
             <span class="item_link">
               <span class="goods_pic">
-                <img class="pic" :src="item.imgUrl">
+                <img class="pic" v-lazy="item.imgUrl">
               </span>
               <span class="goods_ip">「<span class="name">{{item.name}}</span>」</span>
               <span class="goods_title goods_title_multirow"><span class="txt">{{item.title}}</span></span>
@@ -153,17 +153,17 @@
 	                  </svg>
                   </svg>
                 </i>
-                <div class="txt">秒杀中</div>
+                <div class="txt" v-if="goods.spikeGoods[2].length">秒杀中</div>
+                <div class="txt" v-else>秒杀已结束</div>
               </div>
               <i class="triangle"></i>
             </dir>
-            <van-count-down :time="goods.countDown.time" class="count_down" />
+            <van-count-down :time="goods.countDown.time"  @finish="finish()" class="count_down" />
           </div>
 
           <div class="list_item">
             <div class="num" v-text="goods.countDown.futureTime1"></div>
-            <div class="txt" v-if="goods.countDown.time">即将开始</div>
-            <div v-else>秒杀已结束</div>
+            <div class="txt">即将开始</div>
           </div>
           <div class="list_item">
             <div class="num" v-text="goods.countDown.futureTime2"></div>
@@ -190,7 +190,7 @@
             >
             <span class="item_link">
               <span class="goods_pic">
-                <img class="pic" :src="item.imgUrl">
+                <img class="pic" v-lazy="item.imgUrl">
                 <img v-if="index !== 0" class="mark_sub_sale" src="../icons/svg/mark_sub_nostart.svg">
               </span>
               <span class="goods_ip">「<span class="name">{{item.name}}</span>」</span>
@@ -205,6 +205,12 @@
         </ul>
       </div>
 
+    </div>
+
+    <div class="mod_section">
+      <div class="mod_min_banner">
+        
+      </div>
     </div>
 
     <!-- 热销单品 -->
@@ -226,7 +232,7 @@
             >
             <span class="item_link">
               <span class="goods_pic">
-                <img class="pic" :src="item.imgUrl">
+                <img class="pic" v-lazy="item.imgUrl">
               </span>
               <span class="goods_ip">「<span class="name">{{item.name}}</span>」</span>
               <span class="goods_title goods_title_multirow"><span class="txt">{{item.title}}</span></span>
@@ -246,6 +252,49 @@
       </div>
     </div>
 
+    <div class="mod_section">
+      <div class="mod_title">
+        <div class="title_inner">
+          <h3 class="tit_center">
+              <span class="tit">热爱那么大，我还要看看</span>
+          </h3>
+        </div>
+      </div>
+      <div class="mod_goods mod_goods_h">
+        <ul class="goods_list">
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="我是有底线的"
+            @load="onLoad"
+          >
+            <li class="list_item"
+              v-for="item in goods.moreGoods"
+              :key="item.id"
+              @click.once="routerJump('商品id: ' + item.id)"
+              >
+              <span class="item_link">
+                <span class="goods_pic">
+                  <img class="pic" v-lazy="item.imgUrl">
+                </span>
+                <span class="goods_ip">「<span class="name">{{item.name}}</span>」</span>
+                <span class="goods_title goods_title_multirow"><span class="txt">{{item.title}}</span></span>
+                <span class="mod_goods_price" r-notemplate="true">
+                  <span class="sign">¥</span><span class="num">{{item.price}}</span>
+                </span>
+                <i v-if="item.reserve" class="mod_mark_tag mark_tag_normal">限时折扣</i>
+                <span v-if="item.priceVip != false" class="mod_price_vip">
+                  <span class="price_tag_bg">
+                    <span class="name">VIP价</span>
+                  </span>
+                  <span class="tag_num">¥{{item.priceVip}}</span>
+                </span>
+              </span>
+            </li>
+          </van-list>
+        </ul>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -255,6 +304,7 @@
 import { format } from 'path';
 import { setTimeout, setInterval } from 'timers';
 import { formatWithOptions } from 'util';
+import { constants } from 'crypto';
 export default {
   name: 'home',
   components: {
@@ -367,13 +417,16 @@ export default {
           [],
           []
         ],
-        hotGoods: []
-
-      }
+        hotGoods: [],
+        moreGoods: []
+      },
+      moreGoodsid: 0,
+      loading: false,
+      finished: false
     }
   },
   watch: {
-
+    
   },
   created(){
 
@@ -486,7 +539,7 @@ export default {
         v++
       }
     }
-    console.log(this.goods.spikeGoods)
+
   },
   mounted(){
 
@@ -516,6 +569,80 @@ export default {
           this.goods.countDown.spikeIndex = i
         }
       }
+    },
+    finish() {
+      this.goods.spikeGoods[0] = null
+      this.goods.spikeGoods.sort()
+      this.goods.spikeGoods[2] = []
+      //这个延迟是模拟axios请求数据时的延迟
+      setTimeout(() => {
+        let a = new Date()
+        if(a.getHours() >= 10 && a.getHours() < 20){
+          this.goods.countDown.futureTime1 = '20:00'
+          this.goods.countDown.futureTime2 = '10:00'
+        }
+        this.goods.countDown.time = Date.parse(new Date(`${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${this.goods.countDown.futureTime1}`)) - a.getTime()
+        //下面还需要更新秒杀商品  待定
+        for(let i = 0; i < 3; i++){
+          this.goods.spikeGoods[2].push({
+            id: i,
+            imgUrl: require(`../icons/goods/480_480(${i+1}).png`),
+            name: '陈情令',
+            title: '开播纪念版会员卡组',
+            price: Math.floor((Math.random()*320) + 10),
+            //随机限时折扣
+            reserve: (() => {
+              if(Math.floor((Math.random()*10) + 1) >= 9){
+                return true
+              }
+              return false
+            })(),
+            spikePrice: ''
+          })
+          //随机秒杀价格
+          this.goods.spikeGoods[2][i].spikePrice = (() => {
+            return Math.floor(this.goods.spikeGoods[2][i].price * (Math.floor((Math.random() * 9) + 1) / 10))
+          })()
+        }
+      },1000)
+    },
+    onLoad() {
+      if (this.goods.moreGoods.length >= 40) {
+        return false
+      }
+      // 异步更新数据
+      setTimeout(() => {
+        let j = this.goods.moreGoods.length + 10
+        for(let i = this.goods.moreGoods.length; i < j; i++){
+          this.goods.moreGoods.push({
+            id: i,
+            imgUrl: require(`../icons/goods/480_480(${i+1}).png`),
+            name: '魔道祖师',
+            title: '开播纪念版会员卡组',
+            price: Math.floor((Math.random()*300) + 10),
+            //随机预约价
+            reserve: (() => {
+              if(Math.floor((Math.random()*10) + 1) >= 9){
+                return true
+              }
+              return false
+            })(),
+            priceVip: ''
+          })
+          //随机vip价格
+          this.goods.moreGoods[i].priceVip = (() => {
+            if(Math.floor((Math.random()*10) + 1) >= 7){
+              return this.goods.moreGoods[i].price - Math.floor((Math.random()*10) + 1)
+            }
+            return false
+          })()
+        }
+        // 加载状态结束
+        this.loading = false;
+        if (this.goods.moreGoods.length >= 40) {
+          this.finished = true;
+        }
+      }, 500);
     }
   }
 }
@@ -867,7 +994,7 @@ export default {
       box-sizing: border-box;
     }
     
-   .mod_goods_price {
+    .mod_goods_price {
       display: inline-block;
       vertical-align: top;
       color: #ff2c3c;
@@ -933,12 +1060,14 @@ export default {
       color: #ff2c3c;
       border-radius: 2px;
     }
-  }
-  .mod_goods_v{
-    .goods_list{
-      width: 100%;
-      font-size: 0;
-      letter-spacing: -3px;
+    .list_item {
+      position: relative;
+      display: inline-block;
+      vertical-align: top;
+      font-size: 12px;
+      line-height: 1.5;
+      letter-spacing: normal;
+      padding-bottom: 12px;
     }
     .goods_pic {
       position: relative;
@@ -956,25 +1085,24 @@ export default {
         border-radius: 6px;
       }
     }
-     .goods_pic:before {
+    .goods_pic:before {
       position: relative;
       display: block;
       content: ' ';
       width: 100%;
       padding-bottom: 100%;
     }
+  }
+  .mod_goods_v{
+    .goods_list{
+      width: 100%;
+      font-size: 0;
+      letter-spacing: -3px;
+    }
    .list_item {
       width: 33.333%;
     } 
-   .list_item {
-      position: relative;
-      display: inline-block;
-      vertical-align: top;
-      font-size: 12px;
-      line-height: 1.5;
-      letter-spacing: normal;
-      padding-bottom: 12px;
-   }
+   
   }
 
 }
@@ -1103,5 +1231,18 @@ export default {
     top: -5px;
     width: 44px;
     height: 35px;
+}
+
+//更多商品
+.mod_goods_h {
+  .list_item {
+    width: 50%;
+  }
+  /deep/.van-list__finished-text{
+    font-size:16px;
+  }
+ .goods_ip[data-v-fae5bece] {
+    line-height: 17px;
+ }
 }
 </style>
