@@ -32,10 +32,9 @@
           :key='item.alt' 
           :data-swiper-slide-index='item.alt'
           @click.once="routerJump(item.href)"
-          v-lazy-container="{loading: './img/svg/banner.svg', error: './img/svg/banner.svg'}"
           >
-          <img :data-src="item.url">
-          <!-- <img :data-src="item.url" src="../icons/svg/banner.png" > -->
+          <!-- <img :data-src="item.url"> -->
+          <img v-lazyload="item.url" src="../icons/svg/banner.png" >
           <!-- v-lazy-container="{loading: './img/svg/banner.png', error: './img/svg/banner.png'}" -->
         </van-swipe-item>
         <div class="custom-indicator" >
@@ -513,7 +512,11 @@ export default {
       this.goods.countDown.futureTime1 = '20:00'
       this.goods.countDown.futureTime2 = '10:00'
     }
-    this.goods.countDown.time = Date.parse(new Date(`${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${this.goods.countDown.futureTime1}`)) - a.getTime()
+    if(a.getHours() > 20){
+       this.goods.countDown.time = Date.parse(new Date(`${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${this.goods.countDown.futureTime1}`)) + (3600000 * 24) - a.getTime()
+    }else{
+      this.goods.countDown.time = Date.parse(new Date(`${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${this.goods.countDown.futureTime1}`)) - a.getTime()
+    }
 
     //秒杀活动 商品
     let o = 21
@@ -545,11 +548,6 @@ export default {
       }
     }
 
-    this.axios.get("img/svg/banner.svg").then((r) => {
-      console.log("成功")
-    }).catch((e) => {
-      console.log("失败")
-    })
   },
   mounted(){
 
@@ -591,7 +589,12 @@ export default {
           this.goods.countDown.futureTime1 = '20:00'
           this.goods.countDown.futureTime2 = '10:00'
         }
-        this.goods.countDown.time = Date.parse(new Date(`${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${this.goods.countDown.futureTime1}`)) - a.getTime()
+        // console.log(this.goods.countDown.time)
+        if(a.getHours() > 20){
+        this.goods.countDown.time = Date.parse(new Date(`${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${this.goods.countDown.futureTime1}`)) + (3600000 * 24) - a.getTime()
+        }else{
+          this.goods.countDown.time = Date.parse(new Date(`${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${this.goods.countDown.futureTime1}`)) - a.getTime()
+        }
         //下面还需要更新秒杀商品  待定
         for(let i = 0; i < 3; i++){
           this.goods.spikeGoods[2].push({
@@ -615,6 +618,7 @@ export default {
           })()
         }
       },1000)
+      // console.log(this.goods.countDown.time)
     },
     onLoad() {
       if (this.goods.moreGoods.length >= 40) {

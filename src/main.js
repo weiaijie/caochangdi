@@ -7,7 +7,9 @@ import VueAxios from 'vue-axios'
 import Vant from 'vant'
 import 'vant/lib/index.css'
 import './style/common.less'
-import VueLazyload from 'vue-lazyload'
+import Vuelazyload from 'vue-lazyload'
+import Lazyload from 'vue-lazyload-img'
+
 
 
 
@@ -17,7 +19,12 @@ Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
 Vue.use(VueAxios,axios);
 Vue.use(Vant)
-Vue.use(VueLazyload,{
+Vue.use(Lazyload,{
+  fade: true,
+  time: 500
+})
+
+Vue.use(Vuelazyload,{
   // loading:'./img/svg/banner.svg',
   // error: './img/svg/banner.png'
 })
