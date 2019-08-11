@@ -32,10 +32,12 @@
           :key='item.alt' 
           :data-swiper-slide-index='item.alt'
           @click.once="routerJump(item.href)"
+          class="card_pic"
+           v-lazy-container="{ selector: 'img', error: '../img/svg/banner.png', loading: '../img/svg/banner.png' }"
           >
-          <!-- <img :data-src="item.url"> -->
-          <img v-lazyload="item.url" src="../icons/svg/banner.png" >
-          <!-- v-lazy-container="{loading: './img/svg/banner.png', error: './img/svg/banner.png'}" -->
+          <span class="pic">
+            <img :data-src="item.url">
+          </span>
         </van-swipe-item>
         <div class="custom-indicator" >
         </div>
@@ -192,7 +194,7 @@
             <span class="item_link">
               <span class="goods_pic">
                 <img class="pic" v-lazy="item.imgUrl">
-                <img v-if="index !== 0" class="mark_sub_sale" src="../icons/svg/mark_sub_nostart.svg">
+                <img v-if="index !== 0" class="mark_sub_sale" :src="'../img/svg/mark_sub_nostart.svg'">
               </span>
               <span class="goods_ip">「<span class="name">{{item.name}}</span>」</span>
               <span class="goods_title goods_title_multirow"><span class="txt">{{item.title}}</span></span>
@@ -253,6 +255,7 @@
       </div>
     </div>
 
+    <!-- 更多商品 -->
     <div class="mod_section">
       <div class="mod_title">
         <div class="title_inner">
@@ -800,6 +803,21 @@ export default {
     /deep/ .van-swipe__indicator--active{
       background-color:#ffffff;
       opacity: 1;
+    }
+    .card_pic::before {
+      display: block;
+      content: ' ';
+      width: 100%;
+      padding-bottom: 53.333%;
+    }
+    .pic {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
     }
   }
   .swiper_mask{
