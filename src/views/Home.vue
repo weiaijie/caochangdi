@@ -195,6 +195,7 @@
               <span class="goods_pic">
                 <img class="pic" v-lazy="item.imgUrl">
                 <img v-if="index !== 0" class="mark_sub_sale" :src="'../img/svg/mark_sub_nostart.svg'">
+                <img v-else-if="goods.countDown.finish && index == 0"  class="mark_sub_sale" :src="'./img/mark_sub_finish.png'">
               </span>
               <span class="goods_ip">「<span class="name">{{item.name}}</span>」</span>
               <span class="goods_title goods_title_multirow"><span class="txt">{{item.title}}</span></span>
@@ -413,6 +414,7 @@ export default {
         firstGoods: [],
         countDown: {
           time: '',
+          finish: false,
           futureTime1: '10:00',
           futureTime2: '20:00',
           spikeIndex:'0'
@@ -423,11 +425,8 @@ export default {
           []
         ],
         hotGoods: [],
-        moreGoods: {
-          length: 50
-        }
+        moreGoods: []
       },
-      moreGoodsid: 0,
       loading: false,
       finished: false
     }
@@ -464,10 +463,10 @@ export default {
     }
 
     // <!-- 新品首发 -->
-    for(let i = 9; i < 15; i++){
+    for(let i = 10; i < 16; i++){
       this.goods.firstGoods.push({
         id: i,
-        imgUrl: `./img/goods/480_480(${i+1}).png`,
+        imgUrl: `./img/goods/480_480(${i}).png`,
         name: '魔道祖师',
         title: '开播纪念版会员卡组',
         price: Math.floor((Math.random()*300) + 10),
@@ -480,12 +479,12 @@ export default {
         })()
       })
     }
-
+    
     //<!-- 热销单品 -->
-    for(let i = 15; i < 21; i++){
+    for(let i = 16; i < 22; i++){
       this.goods.hotGoods.push({
         id: i,
-        imgUrl: `./img/goods/480_480(${i+1}).png`,
+        imgUrl: `./img/goods/480_480(${i}).png`,
         name: '魔道祖师',
         title: '开播纪念版会员卡组',
         price: Math.floor((Math.random()*300) + 10),
@@ -499,12 +498,12 @@ export default {
         priceVip: ''
       })
       //随机vip价格
-      this.goods.hotGoods[i-15].priceVip = (() => {
+      this.goods.hotGoods[i-16].priceVip = (() => {
         if(Math.floor((Math.random()*10) + 1) >= 7){
-          return this.goods.hotGoods[i-15].price - Math.floor((Math.random()*10) + 1)
+          return this.goods.hotGoods[i-16].price - Math.floor((Math.random()*10) + 1)
         }
         return false
-        console.log(this.goods.hotGoods[i-15].price)
+        console.log(this.goods.hotGoods[i-16].price)
       })()
     }
 
@@ -529,7 +528,7 @@ export default {
       for(let i = o; i < l; i++){
         this.goods.spikeGoods[j].push({
           id: i,
-          imgUrl: `./img/goods/480_480(${i+1}).png`,
+          imgUrl: `./img/goods/480_480(${i}).png`,
           name: '魔道祖师',
           title: '开播纪念版会员卡组',
           price: Math.floor((Math.random()*320) + 10),
@@ -549,6 +548,7 @@ export default {
         o = i
         v++
       }
+      o++
     }
 
   },
@@ -582,11 +582,13 @@ export default {
       }
     },
     finish() {
-      this.goods.spikeGoods[0] = null
-      this.goods.spikeGoods.sort()
-      this.goods.spikeGoods[2] = []
+      this.goods.countDown.finish = true
       //这个延迟是模拟axios请求数据时的延迟
       setTimeout(() => {
+        this.goods.countDown.finish = false
+        this.goods.spikeGoods[0] = null
+        this.goods.spikeGoods.sort()
+        this.goods.spikeGoods[2] = []
         let a = new Date()
         if(a.getHours() >= 10 && a.getHours() < 20){
           this.goods.countDown.futureTime1 = '20:00'
@@ -621,7 +623,6 @@ export default {
           })()
         }
       },1000)
-      // console.log(this.goods.countDown.time)
     },
     onLoad() {
       if (this.goods.moreGoods.length >= 40) {
@@ -632,7 +633,7 @@ export default {
         let j = this.goods.moreGoods.length + 10
         for(let i = this.goods.moreGoods.length; i < j; i++){
           this.goods.moreGoods.push({
-            id: i,
+            id: i+1,
             imgUrl: `./img/goods/480_480(${i+1}).png`,
             name: '魔道祖师',
             title: '开播纪念版会员卡组',
@@ -1271,7 +1272,8 @@ export default {
     width: 50%;
   }
   /deep/.van-list__finished-text{
-    font-size:16px;
+    font-size:14px;
+    line-height:26px;
   }
  .goods_ip[data-v-fae5bece] {
     line-height: 17px;
