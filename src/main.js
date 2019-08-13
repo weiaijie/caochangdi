@@ -10,8 +10,6 @@ import './style/common.less'
 import Vuelazyload from 'vue-lazyload'
 
 
-
-
 //配置请求地址
 axios.defaults.baseURL = process.env.VUE_APP_URL;
 Vue.config.productionTip = false;
@@ -22,7 +20,6 @@ Vue.use(Vuelazyload,{
   // loading:'./img/svg/banner.svg',
   // error: './img/svg/banner.png'
 })
-
 new Vue({
   router,
   store,

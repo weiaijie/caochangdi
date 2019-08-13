@@ -40,7 +40,7 @@ export default {
                 },
                 {
                     title: '我的',
-                    url: 'login',
+                    url: 'mine',
                     src1: 'menu_item_4.svg',
                     src2: 'menu_item_4_current.svg'
                 }

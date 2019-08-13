@@ -257,49 +257,7 @@
     </div>
 
     <!-- 更多商品 -->
-    <div class="mod_section">
-      <div class="mod_title">
-        <div class="title_inner">
-          <h3 class="tit_center">
-              <span class="tit">热爱那么大，我还要看看</span>
-          </h3>
-        </div>
-      </div>
-      <div class="mod_goods mod_goods_h">
-        <ul class="goods_list">
-          <van-list
-            v-model="loading"
-            :finished="finished"
-            finished-text="我是有底线的"
-            @load="onLoad"
-          >
-            <li class="list_item"
-              v-for="item in goods.moreGoods"
-              :key="item.id"
-              @click.once="routerJump('商品id: ' + item.id)"
-              >
-              <span class="item_link">
-                <span class="goods_pic">
-                  <img class="pic" v-lazy="item.imgUrl">
-                </span>
-                <span class="goods_ip">「<span class="name">{{item.name}}</span>」</span>
-                <span class="goods_title goods_title_multirow"><span class="txt">{{item.title}}</span></span>
-                <span class="mod_goods_price" r-notemplate="true">
-                  <span class="sign">¥</span><span class="num">{{item.price}}</span>
-                </span>
-                <i v-if="item.reserve" class="mod_mark_tag mark_tag_normal">限时折扣</i>
-                <span v-if="item.priceVip != false" class="mod_price_vip">
-                  <span class="price_tag_bg">
-                    <span class="name">VIP价</span>
-                  </span>
-                  <span class="tag_num">¥{{item.priceVip}}</span>
-                </span>
-              </span>
-            </li>
-          </van-list>
-        </ul>
-      </div>
-    </div>
+   <MoreGoods></MoreGoods>
 
   </div>
 </template>
@@ -310,11 +268,12 @@ import { format } from 'path';
 import { setTimeout, setInterval } from 'timers';
 import { formatWithOptions } from 'util';
 import { constants } from 'crypto';
+import MoreGoods from './components/more-goods';
 
 export default {
   name: 'home',
   components: {
-    
+    MoreGoods
   },
   data() {
     return{
@@ -670,18 +629,6 @@ export default {
 .van-swipe{
   max-width:640px;
 }
-.home{
-  background-color: #f3f4f4;
-}
-.mod_section{
-  background: #ffffff;
-  margin-bottom: 6px;
-  .mark_tag_spike {
-    background: #ff3e4d;
-    color: #fff;
-    border-radius: 2px;
-  }
-}
 
 .mod_head_search_home {
     position: absolute;
@@ -863,283 +810,6 @@ export default {
 
 }
 
-// 导航样式
-.mod_section{
-  .mod_channel_nav {
-    margin: 0 15px 6px;
-    background: #fff;
-    span{
-      display:block;
-    }
-    .nav_item {
-      -webkit-flex: 1 1 auto;
-      flex: 1 1 auto;
-      width: 0;
-      .icon_ml {
-        display: block;
-        width: 45px;
-        height: 45px;
-        margin: 0 auto 2px;
-        color: #222;
-      }
-    }
-    .nav_list {
-      display: -webkit-flex;
-      display: flex;
-      font-size: 0;
-      letter-spacing: -3px;
-      padding: 20px 0;
-      .icon_ml {
-        width: 48px;
-        height: 48px;
-        margin: 0 auto 9px;
-      }
-      .icon_txt {
-            font-size: 14px;
-            color: #333;
-            letter-spacing: 0;
-            text-align: center;
-            line-height: 14px;
-      }
-      .icon_desc {
-            font-size: 12px;
-            color: #999;
-            letter-spacing: 0;
-            text-align: center;
-            line-height: 12px;
-            margin-top: 4px;
-            display: block;
-      }
-    }
-    .ip_list {
-      display: -webkit-flex;
-      display: flex;
-      font-size: 0;
-      padding: 7px 0 6px 0;
-      letter-spacing: -3px;
-      background: #fafafa;
-      box-shadow: 0 1px 4px 0 rgba(0,0,0,.18);
-      border-radius: 4px;
-      margin-bottom: 20px;
-      .icon_ml {
-        margin-bottom: 7.6px;
-      }
-      .icon_txt {
-        font-size: 12px;
-        color: #999;
-        letter-spacing: 0;
-        text-align: center;
-        line-height: 12px;
-      }
-    }
-  }
-  .mod_channel_nav:after {
-      content: ' ';
-      width: 100%;
-      background: #fff;
-      display: table;
-      margin-top: 5px;
-  }
-}
-
-//商品
-.mod_section{
-  .mod_title {
-    padding: 10px 14px 10px;
-    .tit_center {
-      text-align: center;
-      font-weight: 400;
-      .tit {
-        display: inline-block;
-        vertical-align: top;
-        color: #222;
-        font-size: 18px;
-        line-height: 30px;
-        font-weight: 400;
-      }
-      .icon_more {
-        position: relative;
-        top: 4px;
-        vertical-align: top;
-        margin-left: 2px;
-        color: #ccc;
-        line-height: 22px;  
-      }
-    }
-  }
-  .mod_goods {
-    padding: 0 11px;
-    overflow: hidden;
-    .goods_ip {
-      position: relative;
-      z-index: 3;
-      left: -7px;
-      width: -webkit-calc(100% + 9px);
-      width: calc(100% + 9px);
-      display: block;
-      color: #666;
-      margin-bottom: 2px;
-      font-size: 12px;
-      letter-spacing: 0;
-      line-height: 12px;
-      .name {
-        display: inline-block;
-        vertical-align: top;
-        max-width: -webkit-calc(100% - 28px);
-        max-width: calc(100% - 28px);
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-    }
-    .goods_title {
-      display: block;
-      max-height: 36px;
-      color: #222;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      margin-bottom: 2px;
-      font-size: 14px;
-      color: #333;
-      letter-spacing: 0;
-      line-height: 18px;
-    }
-    .goods_title_multirow {
-      white-space: normal;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      
-    }
-    .txt {
-      .goods_title_multirow;
-    }
-    .item_link {
-      position: relative;
-      display: inline-block;
-      vertical-align: top;
-      width: 100%;
-      padding: 0 3px;
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-    }
-    
-    .mod_goods_price {
-      display: inline-block;
-      vertical-align: top;
-      color: #ff2c3c;
-      font-size: 16px;
-      line-height: 20px;
-    }
-    .mod_price_vip{
-      position: relative;
-      top: 1px;
-      left: 4px;
-      display: inline-block;
-      vertical-align: top;
-      height: 14px;
-      overflow: hidden;
-    }
-    .price_tag_bg {
-      display: inline-block;
-      vertical-align: top;
-      height: 14px;
-      background: #fff7de;
-      border-radius: 2px;
-      margin-right: 2px;
-      padding: 2px 2px;
-      .name {
-        display: webkit-flex;
-        display: flex;
-        width: 100%;
-        -wekit-justify-content: center;
-        justify-content: center;
-        -webkit-align-items: center;
-        align-items: center;
-        font-size: 10px;
-        height: 10px;
-        line-height: normal;
-        letter-spacing: normal;
-        color: #e5b45c;
-      }
-    }
-    .tag_num {
-      display: inline-block;
-      vertical-align: top;
-      font-size: 12px;
-      line-height: 14px;
-      letter-spacing: normal;
-      color: #e5b45c;
-    }
-    .num {
-      display: inline-block;
-      font-weight: 700;
-    }
-    .mod_mark_tag {
-      margin: 2px 4px 0;
-      vertical-align: top;
-      font-size: 10px;
-      letter-spacing: 0;
-      line-height: 16px;
-      height: 14px;
-      display: inline-block;
-      padding: 0 2px;
-    }
-    .mark_tag_normal {
-      background: rgba(255,195,198,.25);
-      color: #ff2c3c;
-      border-radius: 2px;
-    }
-    .list_item {
-      position: relative;
-      display: inline-block;
-      vertical-align: top;
-      font-size: 12px;
-      line-height: 1.5;
-      letter-spacing: normal;
-      padding-bottom: 12px;
-    }
-    .goods_pic {
-      position: relative;
-      display: inline-block;
-      width: 99%;
-      background: #f9f9f9;
-      border-radius: 6px;
-      margin: 5px 0 2px 0;
-      .pic {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 6px;
-      }
-    }
-    .goods_pic:before {
-      position: relative;
-      display: block;
-      content: ' ';
-      width: 100%;
-      padding-bottom: 100%;
-    }
-  }
-  .mod_goods_v{
-    .goods_list{
-      width: 100%;
-      font-size: 0;
-      letter-spacing: -3px;
-    }
-   .list_item {
-      width: 33.333%;
-    } 
-   
-  }
-
-}
-
 
 //秒杀
 .mod_spike_list {
@@ -1266,17 +936,6 @@ export default {
     height: 35px;
 }
 
-//更多商品
-.mod_goods_h {
-  .list_item {
-    width: 50%;
-  }
-  /deep/.van-list__finished-text{
-    font-size:14px;
-    line-height:26px;
-  }
- .goods_ip[data-v-fae5bece] {
-    line-height: 17px;
- }
-}
+
+
 </style>
