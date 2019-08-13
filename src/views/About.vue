@@ -1,6 +1,21 @@
 <template>
   <div class="about pullup">
-    <div ref="scroller" class="pullup-bswrapper">
+	<div ref="scrollerleft" class="left-bswrapper">
+		<div class="pullup-scroller">
+			<ul v-for="(item, index) of sortNav" :key="index" class="pullup-list">
+				<span style="background-color:red">{{index}}</span>
+        	  <li v-for="i of item" :key="i" class="pullup-list-item">
+				  {{i}}
+        	  </li>
+        	</ul>
+        	<!-- <ul class="pullup-list">
+        	  <li v-for="i of sortNav" :key="i" class="pullup-list-item">
+        	    {{ i % 5 === 0 ? ' 👆🏻' : `item ${i} `}}
+        	  </li>
+        	</ul> -->
+      </div>
+	</div>
+    <div ref="scrollerright" class="right-bswrapper">
       <div class="pullup-scroller">
         <ul class="pullup-list">
           <li v-for="i of data" :key="i" class="pullup-list-item">
@@ -32,6 +47,11 @@
 		},
 		data(){
 			return{
+				sortNav: {
+					'推荐':['魔道祖师','好物种草'],
+					'周边':['形象','影视','明星','动漫','游戏','少儿','纪录','综艺片','体育','母婴'],
+					'商品':['居家生活','3c数码','服饰鞋包','手办玩具','配件','文具','食品','饰品','演出票务','视频vip卡','专辑','创意礼品','美妆个护','图书']
+				},
 				isPullUpLoad: false,
         		data: 30
 			}
@@ -44,7 +64,10 @@
     	},
 		mounted(){
 			this.initBscroll()
-			console.log(this.$refs.scroller)
+			console.log(this.sortNav)
+			
+			// console.log(this.$refs.scrollerleft)
+			// console.log(this.$refs.scrollerright)
 			// console.log(this.axios.defaults.baseURL);
 			// listuser().then((r) => {
 			// 	console.log(r);
@@ -57,11 +80,17 @@
 		},
 		methods: {
 			initBscroll() {
-        		this.bscroll = new BScroll(this.$refs.scroller, {
+				//左边回弹
+				this.bscroll = new BScroll(this.$refs.scrollerleft, {
         		  scrollY: true,
         		  pullUpLoad: true
 				})
-				console.log(this.bscroll)
+
+				//右边回弹
+        		this.bscroll = new BScroll(this.$refs.scrollerright, {
+        		  scrollY: true,
+        		  pullUpLoad: true
+				})
       		  	this.bscroll.on('pullingUp', this.pullingUpHandler)
       		},
       		async pullingUpHandler() {
@@ -78,7 +107,6 @@
       		    const newData = await this.ajaxGet(/* url */)
       		    this.data += newData
       		  } catch (err) {
-      		    // handle err
       		    console.log(err)
       		  }
       		},
@@ -117,12 +145,21 @@
 	height: 400px;
 	overflow: hidden;
 }
-  
-.pullup-bswrapper{
+.left-bswrapper{
 	height: 100%;
+	width: 20%;
   	padding: 0 10px;
   	border: 1px solid #ccc;
-  	overflow: hidden;
+	overflow: hidden;
+	float: left;
+}
+.right-bswrapper{
+	height: 100%;
+	width: 68%;
+  	padding: 0 10px;
+  	border: 1px solid #ccc;
+	overflow: hidden;
+	float: right;
 }
   
 .pullup-list{
