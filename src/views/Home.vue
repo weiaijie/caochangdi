@@ -649,17 +649,12 @@ export default {
       border-radius: 16px;
       background: rgba(153,153,153,.2);
     }
-    
     .icon_search {
       position: relative;
       margin: 6px 5px 7px 10px;
       display: inline-block;
       vertical-align: top;
       color: #fff;
-    }
-    .icon {
-        width: 20px;
-        height: 20px;
     }
     .icon_search:before {
         position: absolute;

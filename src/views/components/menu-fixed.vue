@@ -26,8 +26,7 @@ export default {
                 },
                 {
                     title: '分类',
-                    // url: 'ip_cat',
-                    url: 'About',
+                    url: 'ip_cat',
                     src1: 'menu_item_2.svg',
                     src2: 'menu_item_2_current.svg'
                 },

@@ -57,72 +57,72 @@ export default {
         }
     },
     created() {
-        for(let i = 0; i < 4; i++){
-          this.moreGoods.push({
-            id: i+1,
-            imgUrl: `./img/goods/480_480(${i+1}).png`,
-            name: '魔道祖师',
-            title: '开播纪念版会员卡组',
-            price: Math.floor((Math.random()*300) + 10),
-            //随机预约价
-            reserve: (() => {
-              if(Math.floor((Math.random()*10) + 1) >= 9){
-                return true
-              }
-              return false
-            })(),
-            priceVip: ''
-          })
-          //随机vip价格
-          this.moreGoods[i].priceVip = (() => {
-            if(Math.floor((Math.random()*10) + 1) >= 7){
-              return this.moreGoods[i].price - Math.floor((Math.random()*10) + 1)
+      for(let i = 0; i < 4; i++){
+        this.moreGoods.push({
+          id: i+1,
+          imgUrl: `./img/goods/480_480(${i+1}).png`,
+          name: '魔道祖师',
+          title: '开播纪念版会员卡组',
+          price: Math.floor((Math.random()*300) + 10),
+          //随机预约价
+          reserve: (() => {
+            if(Math.floor((Math.random()*10) + 1) >= 9){
+              return true
             }
             return false
-          })()
-        }
+          })(),
+          priceVip: ''
+        })
+        //随机vip价格
+        this.moreGoods[i].priceVip = (() => {
+          if(Math.floor((Math.random()*10) + 1) >= 7){
+            return this.moreGoods[i].price - Math.floor((Math.random()*10) + 1)
+          }
+          return false
+        })()
+      }
     },
     methods: {
         routerJump(url){
           console.log(url)
         },
         onLoad() {
-            if (this.moreGoods.length >= 40) {
-              return false
-            }
-            // 异步更新数据
-            setTimeout(() => {
-              let j = this.moreGoods.length + 10
-              for(let i = this.moreGoods.length; i < j; i++){
-                this.moreGoods.push({
-                  id: i+1,
-                  imgUrl: `./img/goods/480_480(${i+1}).png`,
-                  name: '魔道祖师',
-                  title: '开播纪念版会员卡组',
-                  price: Math.floor((Math.random()*300) + 10),
-                  //随机预约价
-                  reserve: (() => {
-                    if(Math.floor((Math.random()*10) + 1) >= 9){
-                      return true
-                    }
-                    return false
-                  })(),
-                  priceVip: ''
-                })
-                //随机vip价格
-                this.moreGoods[i].priceVip = (() => {
-                  if(Math.floor((Math.random()*10) + 1) >= 7){
-                    return this.moreGoods[i].price - Math.floor((Math.random()*10) + 1)
+          if (this.moreGoods.length >= 40) {
+            return false
+          }
+          // 异步更新数据
+          setTimeout(() => {
+            let j = this.moreGoods.length + 10
+            for(let i = this.moreGoods.length; i < j; i++){
+              this.moreGoods.push({
+                id: i+1,
+                imgUrl: `./img/goods/480_480(${i+1}).png`,
+                name: '魔道祖师',
+                title: '开播纪念版会员卡组',
+                price: Math.floor((Math.random()*300) + 10),
+                //随机预约价
+                reserve: (() => {
+                  if(Math.floor((Math.random()*10) + 1) >= 9){
+                    return true
                   }
                   return false
-                })()
-              }
-              // 加载状态结束
-              this.loading = false;
-              if (this.moreGoods.length >= 40) {
-                this.finished = true;
-              }
-            }, 500);
+                })(),
+                priceVip: ''
+              })
+              //随机vip价格
+              this.moreGoods[i].priceVip = (() => {
+                if(Math.floor((Math.random()*10) + 1) >= 7){
+                  return this.moreGoods[i].price - Math.floor((Math.random()*10) + 1)
+                }
+                return false
+              })()
+            }
+            // 加载状态结束
+            this.loading = false;
+            if (this.moreGoods.length >= 40) {
+              this.finished = true;
+            }
+          }, 500);
         }
     }
 }

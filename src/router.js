@@ -18,9 +18,9 @@ const router = new Router({
           component: () => import('./views/Home.vue')
         },
         {
-          path: '/about',
-          name: 'about',
-          component: () => import('./views/About.vue')
+          path: '/ip_cat',
+          name: 'ip_cat',
+          component: () => import('./views/Sort.vue')
         },
         {
           path: '/trolley',

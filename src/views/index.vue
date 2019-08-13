@@ -1,7 +1,7 @@
 <template>
     <div class='index'>
         <router-view/>
-        <hr style="border:0; height:50px;background-color:#fff;">
+        <!-- <hr style="border:0; height:50px;background-color:#fff;"> -->
         <MenuFixed></MenuFixed>
     </div>
 </template>
