@@ -27,8 +27,8 @@
   			  </div>
   			</div>
 			</div>
-			<div class="mod_auto_main" style="touch-action: none;" >
-				<div class="mod_sort_goods mod_sort_goods_h" ref="scrollerright">
+			<div class="mod_auto_main" style="touch-action: none;" ref="scrollerright">
+				<div class="mod_sort_goods mod_sort_goods_h">
     			  <ul class="goods_list scroller">
     			    <li class="list_item"
 								v-for="(item, index) in goods"
