@@ -21,23 +21,23 @@
 						<div class="nav_tit">
 							<span class="tit">{{index}}</span>
 						</div>
-  			     <div v-for="i of item" :key="i" class="nav_item">
-							{{i}}
+  			     <div v-for="name of item" :key="name" :class="sortNavid.navItem == name ? 'nav_item current' : 'nav_item'" @click="routerJump({name,index})">
+							{{name}}
   			     </div>
   			  </div>
   			</div>
 			</div>
-			<div class="mod_auto_main">
-				<div class="mod_sort_goods mod_sort_goods_h"  ref="scrollerright">
-    			  <ul class="goods_list scroller" >
+			<div class="mod_auto_main" style="touch-action: none;" >
+				<div class="mod_sort_goods mod_sort_goods_h" ref="scrollerright">
+    			  <ul class="goods_list scroller">
     			    <li class="list_item"
-								v-for="item in goods"
-                :key="item.id"
+								v-for="(item, index) in goods"
+                :key="index"
                 @click.once="routerJump('商品id: ' + item.id)"
                 >
                 <span class="item_link">
                   <span class="goods_pic">
-                    <img class="pic" v-lazy="item.imgUrl">
+                    <img class="pic" :src="item.imgUrl">
                   </span>
                   <span class="goods_ip">「<span class="name">{{item.name}}</span>」</span>
                   <span class="goods_title goods_title_multirow"><span class="txt">{{item.title}}</span></span>
@@ -54,47 +54,23 @@
                 </span>
     			    </li>
     			  </ul>
-    			  <div class="pullup-wrapper">
-    			    <div v-if="!isPullUpLoad" class="before-trigger">
-    			      <span class="pullup-txt">Pull up and load more</span>
-    			    </div>
-    			    <div v-else class="after-trigger">
-    			      <span class="pullup-txt">Loading...</span>
+						<div class="pullup-wrapper">
+    			    <div v-if="isPullUpLoad" class="after-trigger">
+    			      <span class="pullup-txt"><van-loading size="18px" type="spinner" color="#1989fa" /></span>
     			    </div>
     			  </div>
+    			  <!-- <div class="pullup-wrapper">
+    			    <div v-if="!isPullUpLoad" class="before-trigger">
+    			      <span class="pullup-txt">我是有底线的</span>
+    			    </div>
+    			    <div v-else class="after-trigger">
+    			      <span class="pullup-txt"><van-loading size="18px" type="spinner" color="#1989fa" /></span>
+    			    </div>
+    			  </div> -->
 				</div>
 			</div>
 		</div>
-		
-		
-			<!-- <div ref="scrollerleft" class="left-bswrapper">
-				<div class="pullup-scroller">
-					<ul v-for="(item, index) of sortNav" :key="index" class="pullup-list">
-						<span style="background-color:red">{{index}}</span>
-  		      	  <li v-for="i of item" :key="i" class="pullup-list-item">
-						  		{{i}}
-  		      	  </li>
-  		      	</ul>
-  		    </div>
-			</div>-->
-    	<!-- <div ref="scrollerright" class="right-bswrapper">
-    	  <div class="pullup-scroller">
-    	    <ul class="pullup-list">
-    	      <li v-for="i of data" :key="i" class="pullup-list-item">
-    	        {{ i % 5 === 0 ? 'scroll up 👆🏻' : `I am item ${i} `}}
-    	      </li>
-    	    </ul>
-    	    <div class="pullup-wrapper">
-    	      <div v-if="!isPullUpLoad" class="before-trigger">
-    	        <span class="pullup-txt">Pull up and load more</span>
-    	      </div>
-    	      <div v-else class="after-trigger">
-    	        <span class="pullup-txt">Loading...</span>
-    	      </div>
-    	    </div>
-    	  </div>
-    	</div>  -->
-	
+
   </div>
 </template>
 
@@ -117,15 +93,19 @@
 				},
 				isPullUpLoad: false,
 				data: 30,
+				sortNavid: {
+					navTit: '推荐',
+					navItem: '魔道祖师'
+				},
 				goods: []
 			}
 		},
 		watch: {
-    	    
+
     },
 		created(){
 			this.bscroll = null
-			for(let i = 0; i < 10; i++){
+			for(let i = 0; i < 6; i++){
         this.goods.push({
           id: i+1,
           imgUrl: `./img/goods/480_480(${i+1}).png`,
@@ -163,99 +143,107 @@
 		beforeDestroy() {
 		},
 		methods: {
+			routerJump(url){
+				
+				this.goods = []
+				console.log(this.goods)
+				this.goods = this.commend(url.name)
+				// this.rightScroll.refresh()
+				console.log(this.rightScroll.scrollerHeight)
+				// console.log(url.name)
+				// console.log(this.sortNavid.navItem)	
+				if(url.name == this.sortNavid.navItem){
+					return false
+				}
+				this.sortNavid.navTit = url.index
+				this.sortNavid.navItem = url.name
+				// this.$refs.scrollerright.children[0].style = ''
+				// this.$refs.scrollerright.children[0].style['transform'] = "translateX(0px) translateY(0px) translateZ(0px)"
+				
+			},
 			initBscroll() {
 				// 左边回弹
-				this.bscroll = new BScroll(this.$refs.scrollerleft, {
-        		  scrollY: true,
-        		  pullUpLoad: true
+				this.leftScroll = new BScroll(this.$refs.scrollerleft, {
+					click: true,
+        	scrollY: true,
+        	pullUpLoad: true
 				})
 				//右边回弹
-        		this.bscroll = new BScroll(this.$refs.scrollerright, {
-        		  scrollY: true,
-        		  pullUpLoad: true
+        this.rightScroll = new BScroll(this.$refs.scrollerright, {
+					click: true,
+          scrollY: true,
+					pullUpLoad: true,
 				})
-      	  	this.bscroll.on('pullingUp', this.pullingUpHandler)
-      	},
-      	async pullingUpHandler() {
-      	  this.isPullUpLoad = true
+				this.rightScroll.on('pullingUp', this.pullingUpHandler)
+      },
+      async pullingUpHandler() {
+				
+				this.isPullUpLoad = true
 
-      	  await this.requestData()
+				await this.requestData()
 
-      	  this.bscroll.finishPullUp()
-      	  this.bscroll.refresh()
-      	  this.isPullUpLoad = false
-      	},
-      	async requestData() {
-					// if(this.goods.length > 30){
-					// 	 this.isPullUpLoad = false
-					// 	 console.log(this.goods.length)
-					// 	 return false;
-					// }
-      	  try {
-						setTimeout(() => {
-      	      let j = this.goods.length + 10
-            	for(let i = this.goods.length; i < j; i++){
-            	  this.goods.push({
-            	    id: i+1,
-            	    imgUrl: `./img/goods/480_480(${i+1}).png`,
-            	    name: '魔道祖师',
-            	    title: '开播纪念版会员卡组',
-            	    price: Math.floor((Math.random()*300) + 10),
-            	    //随机预约价
-            	    reserve: (() => {
-            	      if(Math.floor((Math.random()*10) + 1) >= 9){
-            	        return true
-            	      }
-            	      return false
-            	    })(),
-            	    priceVip: ''
-            	  })
-            	  //随机vip价格
-            	  this.goods[i].priceVip = (() => {
-            	    if(Math.floor((Math.random()*10) + 1) >= 7){
-            	      return this.goods[i].price - Math.floor((Math.random()*10) + 1)
-            	    }
-            	    return false
-            	  })()
-            	}
-      	  }, 1000)
-      	    // const newData = await this.ajaxGet(/* url */)
-      	    // this.data += newData
-      	  } catch (err) {
-      	    console.log(err)
-      	  }
-      	},
-      	ajaxGet(/* url */) {
-      	  return new Promise(resolve => {
-      	    setTimeout(() => {
-      	      let j = this.goods.length + 10
-            	for(let i = this.goods.length; i < j; i++){
-            	  this.goods.push({
-            	    id: i+1,
-            	    imgUrl: `./img/goods/480_480(${i+1}).png`,
-            	    name: '魔道祖师',
-            	    title: '开播纪念版会员卡组',
-            	    price: Math.floor((Math.random()*300) + 10),
-            	    //随机预约价
-            	    reserve: (() => {
-            	      if(Math.floor((Math.random()*10) + 1) >= 9){
-            	        return true
-            	      }
-            	      return false
-            	    })(),
-            	    priceVip: ''
-            	  })
-            	  //随机vip价格
-            	  this.goods[i].priceVip = (() => {
-            	    if(Math.floor((Math.random()*10) + 1) >= 7){
-            	      return this.goods[i].price - Math.floor((Math.random()*10) + 1)
-            	    }
-            	    return false
-            	  })()
-            	}
-      	  }, 1000)
-      	})
-      }
+        this.rightScroll.finishPullUp()
+        this.rightScroll.refresh()
+        this.isPullUpLoad = false
+      },
+      async requestData() {
+        try {
+					const newData = await this.newGet({
+						name: this.sortNavid.navItem,
+						index: this.sortNavid.navTit
+					})
+					this.goods = [...this.goods, ...newData]
+        } catch (err) {
+          console.log(err)
+        }
+      },
+      newGet(url) {
+        return new Promise(resolve => {
+          setTimeout(() => {
+						console.log(url.index)
+						if(url.index == '推荐'){
+							resolve(this.commend(url.name))
+						}
+						if(url.index == '周边'){
+							resolve(this.commend(url.name))
+						}
+						if(url.index == '商品'){
+							resolve(this.commend(url.name))
+						}
+        }, 500)
+				})
+				
+			},
+			//推荐假数据
+			commend(name) {
+				let newGoods = []
+        for(let i = 0; i < 20; i++){
+					let j = Math.floor((Math.random()*48) + 1)
+        	newGoods.push({
+          	  id: j,
+          	  imgUrl: `./img/goods/480_480(${j}).png`,
+          	  name: name,
+          	  title: '开播纪念版会员卡组',
+          	  price: Math.floor((Math.random()*300) + 10),
+          	  //随机预约价
+          	  reserve: (() => {
+          	    if(Math.floor((Math.random()*10) + 1) >= 9){
+          	      return true
+          	    }
+          	    return false
+          	  })(),
+          	  priceVip: ''
+        	})
+        	 //随机vip价格
+        	 newGoods[i].priceVip = (() => {
+        	if(Math.floor((Math.random()*10) + 1) >= 7){
+        	  return newGoods[i].price - Math.floor((Math.random()*10) + 1)
+        	}
+        		return false
+					})()
+				}
+				return newGoods
+			}
 		}
 	}
 </script>
@@ -434,82 +422,46 @@
 	-webkit-transform-origin: 0 0;
 }
 
+.nav_item.current {
+	color: #15d3a6;
+}
+.nav_item.current:before {
+  position: absolute;
+  content: ' ';
+  top: 10px;
+  left: 0;
+  width: 3px;
+  height: 20px;
+  font-size: 0;
+  overflow: hidden;
+  background-color: #15d3a6;
+}
+
+
+
 .mod_auto_main {
-    position: relative;
-    z-index: 1;
-    height: 100%;
-		margin-left: 90px;
+  position: relative;
+  z-index: 1;
+	height: calc(100% - 50px);
+	margin-left: 90px;
 }
 
 .mod_sort_goods {
-		padding: 14px 11px 0;
-		height: 100%;
-		// overflow: hidden;
+	padding: 14px 11px 0;
 }
 .goods_list {
-    overflow: hidden;
-    // font-size: 0;
-		// letter-spacing: -3px;
-		// height: 100%;
-}
-
-
-.scroll-wrapper{
-	height: 400px;
-	overflow: hidden;
-	.scroll-item{
-		height: 50px;
-	  	line-height: 50px;
-	  	font-size: 24px;
-	  	font-weight: bold;
-	  	border-bottom: 1px solid #eee;
-	  	text-align: center;
-	  }
-	.scroll-item:nth-child(2n){
-	  background-color:#f3f5f7;
-	}
-	  
-	.scroll-item:nth-child(2n+1){
-	  background-color:#42b983;
+	// overflow: hidden;
+	.list_item{
+		width: 50%;
 	}
 }
 
-.pullup{
-	height: 400px;
-	overflow: hidden;
-}
-.left-bswrapper{
-	height: 100%;
-	width: 20%;
-  	padding: 0 10px;
-  	border: 1px solid #ccc;
-	overflow: hidden;
-	float: left;
-}
-.right-bswrapper{
-	height: 100%;
-	width: 68%;
-  	padding: 0 10px;
-  	border: 1px solid #ccc;
-	overflow: hidden;
-	float: right;
-}
-  
-.pullup-list{
-	padding: 0;
-}
-  
-.pullup-list-item{
-  	padding: 10px 0;
-  	list-style: none;
-  	border-bottom: 1px solid #ccc;
-}
+
 .pullup-wrapper{
-	padding: 20px;
-  	text-align: center;
-  	color: #999;
-}
-  
-
-  
+	padding: 10px;
+  text-align: center;
+	color: #999;
+	font-size: 14px;
+  line-height: 26px;
+}  
 </style>
