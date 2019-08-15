@@ -28,8 +28,7 @@
   			</div>
 			</div>
 			<div class="mod_auto_main">
-				<SortRight></SortRight>
-				<SortRight></SortRight>
+					<SortRight  v-for="i in temp" :key="i.navItem" :data="i.navItem" :class="sortNavid.navItem == i.navItem ? 'current' : ''"></SortRight>
 			</div>
 			
 		</div>
@@ -62,7 +61,13 @@ export default{
 			sortNavid: {
 				navTit: '推荐',
 				navItem: '魔道祖师'
-			}
+			},
+			temp: [
+				{
+					navTit: '推荐',
+					navItem: '魔道祖师'
+				}
+			]
 		}
 	},
 	watch: {
@@ -83,10 +88,16 @@ export default{
 	},
 	methods: {
 		routerJump(url){
-			console.log(this)
-			// var Profile = this.extend(SortRight)
-			// 创建 Profile 实例，并挂载到一个元素上。
-			// new Profile().$mount('.mod_auto_main')
+			
+			if(url.name == this.sortNavid.navItem){
+				return false
+			}
+			this.sortNavid.navTit = url.index
+			this.sortNavid.navItem = url.name
+			this.temp.push({
+				navTit: this.sortNavid.navTit,
+				navItem: this.sortNavid.navItem
+			})
 			// this.goods = []
 			// console.log(this.goods)
 			// this.goods = this.commend(url.name)
