@@ -62,31 +62,31 @@ export default {
   },
   created(){
     this.bscroll = null
-    commend('魔道祖师')
-		// for(let i = 0; i < 6; i++){
-    //   this.goods.push({
-    //     id: i+1,
-    //     imgUrl: `./img/goods/480_480(${i+1}).png`,
-    //     name: '魔道祖师',
-    //     title: '开播纪念版会员卡组',
-    //     price: Math.floor((Math.random()*300) + 10),
-    //     //随机预约价
-    //     reserve: (() => {
-    //       if(Math.floor((Math.random()*10) + 1) >= 9){
-    //         return true
-    //       }
-    //       return false
-    //     })(),
-    //     priceVip: ''
-    //   })
-    //   //随机vip价格
-    //   this.goods[i].priceVip = (() => {
-    //     if(Math.floor((Math.random()*10) + 1) >= 7){
-    //       return this.goods[i].price - Math.floor((Math.random()*10) + 1)
-    //     }
-    //     return false
-    //   })()
-    // }
+		for(let i = 0; i < 6; i++){
+      let j = Math.floor((Math.random()*48) + 1)
+      this.goods.push({
+        id: j,
+        imgUrl: `./img/goods/480_480(${j}).png`,
+        name: name,
+        title: '开播纪念版会员卡组',
+        price: Math.floor((Math.random()*300) + 10),
+        //随机预约价
+        reserve: (() => {
+          if(Math.floor((Math.random()*10) + 1) >= 9){
+            return true
+          }
+          return false
+        })(),
+        priceVip: ''
+      })
+      //随机vip价格
+      newGoods[i].priceVip = (() => {
+      if(Math.floor((Math.random()*10) + 1) >= 7){
+        return newGoods[i].price - Math.floor((Math.random()*10) + 1)
+      }
+      	return false
+  		})()
+    }
   },
 	mounted(){
     console.log(1)
