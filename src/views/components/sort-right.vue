@@ -48,7 +48,8 @@ import BScroll from '@better-scroll/core'
 import Pullup from '@better-scroll/pull-up'
 BScroll.use(Pullup)
 export default {
-  name: 'sortRight',
+	name: 'sortRight',
+	props: ['navItem'],
   data() {
     return{
       isPullUpLoad: false,
@@ -67,7 +68,7 @@ export default {
       this.goods.push({
         id: j,
         imgUrl: `./img/goods/480_480(${j}).png`,
-        name: name,
+        name: this.navItem,
         title: '开播纪念版会员卡组',
         price: Math.floor((Math.random()*300) + 10),
         //随机预约价
@@ -78,20 +79,18 @@ export default {
           return false
         })(),
         priceVip: ''
-      })
+			})
       //随机vip价格
-      newGoods[i].priceVip = (() => {
+      this.goods[i].priceVip = (() => {
       if(Math.floor((Math.random()*10) + 1) >= 7){
-        return newGoods[i].price - Math.floor((Math.random()*10) + 1)
+        return this.goods[i].price - Math.floor((Math.random()*10) + 1)
       }
       	return false
   		})()
     }
   },
 	mounted(){
-    console.log(1)
     this.initBscroll()
-    console.log(1)
 	},
 	beforeDestroy() {
 	},
@@ -115,8 +114,6 @@ export default {
   
   	},
   	initBscroll() {
-      // 左边回弹
-      console.log(this.$refs.scrollerright)
   		//右边回弹
       this.rightScroll = new BScroll(this.$refs.scrollerright, {
   			click: true,

@@ -61,9 +61,9 @@ export default {
 .menu_fixed{
   z-index:50;
   position: fixed;
-  left: 0;
   bottom: 0;
   width: 100%;
+  max-width: 640px;
   height:50px;
   background-color:#fff;
   .menu_list {

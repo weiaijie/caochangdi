@@ -28,7 +28,7 @@
   			</div>
 			</div>
 			<div class="mod_auto_main">
-					<SortRight  v-for="i in temp" :key="i.navItem" :data="i.navItem" :class="sortNavid.navItem == i.navItem ? 'current' : ''"></SortRight>
+					<SortRight  v-for="i in temp" :key="i.navItem" :data="i.navItem" :class="sortNavid.navItem == i.navItem ? 'current' : ''" :navItem='i.navItem'></SortRight>
 			</div>
 			
 		</div>
@@ -94,6 +94,14 @@ export default{
 			}
 			this.sortNavid.navTit = url.index
 			this.sortNavid.navItem = url.name
+
+			//判断是否已经请求过的分类
+			for(let i in this.temp){
+				if(url.name == this.temp[i].navItem){
+					console.log(this.temp[i].navItem)
+					return false
+				}
+			}
 			this.temp.push({
 				navTit: this.sortNavid.navTit,
 				navItem: this.sortNavid.navItem
