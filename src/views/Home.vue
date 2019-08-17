@@ -521,6 +521,7 @@ export default {
     routerJump(url){
       console.log(url)
     },
+    //秒杀选定状态切换
     spikeList(e){
       let dom = document.getElementsByClassName('mod_spike_list')[0].children[0].children
       for(let i = 0; i < dom.length; i++){
@@ -540,6 +541,7 @@ export default {
         }
       }
     },
+    //秒杀时间结束切换
     finish() {
       this.goods.countDown.finish = true
       //这个延迟是模拟axios请求数据时的延迟
@@ -584,42 +586,7 @@ export default {
       },1000)
     },
     onLoad() {
-      if (this.goods.moreGoods.length >= 40) {
-        return false
-      }
-      // 异步更新数据
-      setTimeout(() => {
-        let j = this.goods.moreGoods.length + 10
-        for(let i = this.goods.moreGoods.length; i < j; i++){
-          this.goods.moreGoods.push({
-            id: i+1,
-            imgUrl: `./img/goods/480_480(${i+1}).png`,
-            name: '魔道祖师',
-            title: '开播纪念版会员卡组',
-            price: Math.floor((Math.random()*300) + 10),
-            //随机预约价
-            reserve: (() => {
-              if(Math.floor((Math.random()*10) + 1) >= 9){
-                return true
-              }
-              return false
-            })(),
-            priceVip: ''
-          })
-          //随机vip价格
-          this.goods.moreGoods[i].priceVip = (() => {
-            if(Math.floor((Math.random()*10) + 1) >= 7){
-              return this.goods.moreGoods[i].price - Math.floor((Math.random()*10) + 1)
-            }
-            return false
-          })()
-        }
-        // 加载状态结束
-        this.loading = false;
-        if (this.goods.moreGoods.length >= 40) {
-          this.finished = true;
-        }
-      }, 500);
+  
     }
   }
 }

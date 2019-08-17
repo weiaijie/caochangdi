@@ -21,6 +21,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+MoreGoods{
+    margin-bottom:50px;
+}
+
 .mod_section:before{
     content: '';
     display: block;

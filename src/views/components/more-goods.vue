@@ -129,14 +129,18 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.mod_section{
+  margin-bottom:50px;
+}
 //更多商品
 .mod_goods_h {
   .list_item {
     width: 50%;
   }
-  /deep/.van-list__finished-text{
+  /deep/.van-list__finished-text ,/deep/.van-loading__text{
     font-size:14px;
     line-height:26px;
+    letter-spacing: 0;
   }
  .goods_ip[data-v-fae5bece] {
     line-height: 17px;
