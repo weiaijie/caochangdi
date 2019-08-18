@@ -738,7 +738,7 @@ export default {
     .pic {
       width: 100%;
       height: 100%;
-      background: url(../icons/svg/bg_mask_headimg.svg) no-repeat center bottom;
+      background: url(/img/svg/bg_mask_headimg.svg) no-repeat center bottom;
       background-size: 100%;
       z-index: 1;
       position: absolute;
