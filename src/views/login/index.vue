@@ -94,7 +94,7 @@ export default {
         padding-top:30px;
         margin:auto;
         .logo{
-            background-image:url(../../icons/logo.png);
+            background-image:url(/img/logo.png);
             height:100px;
             width:244px;
             margin:0 auto 20px;

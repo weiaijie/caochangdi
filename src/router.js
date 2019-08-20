@@ -15,21 +15,33 @@ const router = new Router({
         {
           path: '/home',
           name: 'home',
+          meta: {
+            title: '草场地首页'
+          },
           component: () => import('./views/Home.vue')
         },
         {
           path: '/ip_cat',
           name: 'ip_cat',
+          meta: {
+            title: '分类'
+          },
           component: () => import('./views/Sort.vue')
         },
         {
           path: '/trolley',
           name: 'trolley',
+          meta: {
+            title: '购物车'
+          },
           component: () => import('./views/Trolley.vue')
         },
         {
           path: '/mine',
           name: 'mine',
+          meta: {
+            title: '我的'
+          },
           component: () => import('./views/Mine.vue')
         }
       ]
@@ -44,6 +56,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   // console.log(to.path)
+  // document.title = to.meta.title
   next()
 })
 

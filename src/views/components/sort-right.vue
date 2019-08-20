@@ -65,7 +65,7 @@ export default {
   },
   created(){
     this.bscroll = null
-		for(let i = 0; i < 6; i++){
+		for(let i = 0; i < 10; i++){
       let j = Math.floor((Math.random()*48) + 1)
       this.goods.push({
         id: j,

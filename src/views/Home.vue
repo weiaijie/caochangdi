@@ -267,7 +267,7 @@
 import { format } from 'path';
 import { setTimeout, setInterval } from 'timers';
 import { formatWithOptions } from 'util';
-import { constants } from 'crypto';
+import { constants, fips } from 'crypto';
 import MoreGoods from './components/more-goods';
 
 export default {
@@ -523,6 +523,10 @@ export default {
     },
     //秒杀选定状态切换
     spikeList(e){
+      //忽略这个事件
+      if(e.target.className == 'mod_spike_list'){
+        return false
+      }
       let dom = document.getElementsByClassName('mod_spike_list')[0].children[0].children
       for(let i = 0; i < dom.length; i++){
         dom[i].classList.remove('current')

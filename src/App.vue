@@ -10,6 +10,6 @@ body{
   margin:0;
   padding:0;
   border:0;
-  background:#000;
+  max-width: 640px;
 }
 </style>

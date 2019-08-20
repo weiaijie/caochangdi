@@ -97,4 +97,12 @@ export default {
 
   
 }
+
+@media screen and (min-device-width: 768px){
+	.menu_fixed{
+		width: 50%;
+    min-width: 375px;
+	}
+}
+
 </style>
