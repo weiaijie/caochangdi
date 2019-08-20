@@ -76,6 +76,7 @@ export default{
 		
   },
 	mounted(){
+		this.initBscroll()
 		// console.log(this.axios.defaults.baseURL);
 		// listuser().then((r) => {
 		// 	console.log(r);
@@ -116,7 +117,14 @@ export default{
 			// 	return false
 			// }
 			
-		}
+		},
+		initBscroll() {
+  		//右边回弹
+      this.rightScroll = new BScroll(this.$refs.scrollerleft, {
+  			click: true,
+        scrollY: true,
+  		})
+    }
 	}
 }
 </script>
