@@ -86,7 +86,7 @@
           <li class="list_item" 
             v-for="item in goods.activityGoods"
             :key="item.id"
-            @click.once="routerJump('商品id: ' + item.id)"
+            @click.once="routerJump('detail?proId=' + item.id)"
             >
             <span class="item_link">
               <span class="goods_pic">
@@ -125,7 +125,7 @@
           <li class="list_item" 
             v-for="item in goods.firstGoods"
             :key="item.id"
-            @click.once="routerJump('商品id: ' + item.id)"
+            @click.once="routerJump('detail?proId=' + item.id)"
             >
             <span class="item_link">
               <span class="goods_pic">
@@ -189,7 +189,7 @@
           <li class="list_item" 
             v-for="item in items"
             :key="item.id"
-            @click.once="routerJump('商品id: ' + item.id)"
+            @click.once="routerJump('detail?proId=' + item.id)"
             >
             <span class="item_link">
               <span class="goods_pic">
@@ -232,7 +232,7 @@
           <li class="list_item" 
             v-for="item in goods.hotGoods"
             :key="item.id"
-            @click.once="routerJump('商品id: ' + item.id)"
+            @click.once="routerJump('detail?proId=' + item.id)"
             >
             <span class="item_link">
               <span class="goods_pic">
@@ -520,6 +520,7 @@ export default {
   methods: {
     routerJump(url){
       console.log(url)
+      this.$router.push(url)
     },
     //秒杀选定状态切换
     spikeList(e){

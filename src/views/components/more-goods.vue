@@ -19,7 +19,7 @@
                 <li class="list_item"
                   v-for="item in moreGoods"
                   :key="item.id"
-                  @click.once="routerJump('商品id: ' + item.id)"
+                  @click.once="routerJump('detail?proId=' + item.id)"
                   >
                   <span class="item_link">
                     <span class="goods_pic">

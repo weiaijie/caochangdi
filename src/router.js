@@ -1,8 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from './views/index.vue'
 
 Vue.use(Router)
+
+
+const Home = () => import(/* webpackChunkName: "group-foo" */ './views/Home.vue')
+const Sort = () => import(/* webpackChunkName: "group-foo" */ './views/Sort.vue')
+const Trolley = () => import(/* webpackChunkName: "group-foo" */ './views/Trolley.vue')
+const Mine = () => import(/* webpackChunkName: "group-foo" */ './views/Mine.vue')
+const Index = () => import(/* webpackChunkName: "group-foo" */ './views/index.vue')
+const Goods = () => import(/* webpackChunkName: "group-foo" */ './views/Goods.vue')
+const error = () => import(/* webpackChunkName: "group-foo" */ './views/404.vue')
 
 const router = new Router({
   // mode: 'history',
@@ -18,7 +26,7 @@ const router = new Router({
           meta: {
             title: '草场地首页'
           },
-          component: () => import('./views/Home.vue')
+          component: Home
         },
         {
           path: '/ip_cat',
@@ -26,7 +34,7 @@ const router = new Router({
           meta: {
             title: '分类'
           },
-          component: () => import('./views/Sort.vue')
+          component: Sort
         },
         {
           path: '/trolley',
@@ -34,7 +42,7 @@ const router = new Router({
           meta: {
             title: '购物车'
           },
-          component: () => import('./views/Trolley.vue')
+          component: Trolley
         },
         {
           path: '/mine',
@@ -42,21 +50,37 @@ const router = new Router({
           meta: {
             title: '我的'
           },
-          component: () => import('./views/Mine.vue')
+          component: Mine
         }
       ]
     },
     {
       path: '/login',
       name: 'Login',
-      component: () => import('./views/login/index.vue')
+      component: Index
     },
+    {
+      path: '/detail',
+      name: 'detail',
+      meta: {
+        title: ''
+      },
+      component: Goods
+    },
+    {
+      path: '*',
+      name: '*',
+      meta: {
+        title: '404'
+      },
+      component: error
+    }
   ]
 })
 
 router.beforeEach((to, from, next) => {
   // console.log(to.path)
-  // document.title = to.meta.title
+  document.title = to.meta.title
   next()
 })
 

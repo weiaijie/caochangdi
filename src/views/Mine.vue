@@ -273,6 +273,16 @@ export default {
       padding-right: 15px;
     }
   }
+  .link_item:after {
+    content: " ";
+    position: absolute;
+    bottom: 0;
+    left: 15px;
+    right: 0;
+    border-bottom: 1px solid #eaeaea;
+    -webkit-transform: scaleY(.5);
+    -webkit-transform-origin: 0 0;
+  }
   
 }
 
