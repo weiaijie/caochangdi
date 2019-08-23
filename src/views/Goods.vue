@@ -15,6 +15,13 @@
           </van-swipe>
         </div>
       </div>
+      <div class="goods_price goods_cur">
+        <div class="price_tit">草场价</div>
+        <span class="price_tit">
+          <span class="sign">¥</span>
+          <span class="num">75</span>
+        </span>
+      </div>
     </div>
     <div class="mod_section"></div>
     <div class="mod_section">
