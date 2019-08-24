@@ -17,9 +17,20 @@
       </div>
       <div class="goods_price goods_cur">
         <div class="price_tit">草场价</div>
-        <span class="price_tit">
+        <span class="price_cur">
           <span class="sign">¥</span>
           <span class="num">75</span>
+        </span>
+      </div>
+      <div class="goods_emp">
+        <span class="emp_txt">预计2019年9月30日发货</span>
+      </div>
+      <div class="shop_title">
+        <span class="title">【预售】《全职高手之巅峰荣耀》大电影 亚克力立牌摆件</span>
+      </div>
+      <div class="shop_fare">
+        <span class="txt">运费<span class="colon">：</span>
+          限时包邮
         </span>
       </div>
     </div>
@@ -208,5 +219,72 @@ export default {
 .mod_article {
   padding: 10px 0;
   text-align: center;
+}
+
+.goods_cur:before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-bottom: 1px dashed #f4f4f4;
+  -webkit-transform: scaleY(.5);
+  -webkit-transform-origin: 0 0;
+}
+.shop_title {
+  font-size: 15px;
+  line-height: 20px;
+  color: #222;
+  font-weight: 700;
+  word-wrap: break-word;
+  word-break: break-all;
+  min-height: 40px;
+  margin: 0 120px 5px 15px;
+}
+.goods_price {
+  padding: 4px 100px 4px 15px;
+}
+.price_tit {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 14px;
+  line-height: 28px;
+  color: #ff2c3c;
+  letter-spacing: normal;
+  margin-right: 5px;
+}
+.price_cur {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 21px;
+  line-height: 28px;
+  font-weight: 700;
+  color: #ff2c3c;
+  margin-right: 5px;
+  .sign {
+    font-size: 20px;
+    line-height: 28px;
+  }
+  .num {
+    margin-right: 2px;
+  }
+}
+
+.goods_emp {
+  margin: 0 120px 4px 15px;
+  .emp_txt {
+    display: block;
+    font-size: 12px;
+    line-height: 20px;
+    color: #ff2c3c;
+    letter-spacing: normal;
+  }
+}
+
+.shop_fare {
+    position: relative;
+    margin: 0 15px;
+    display: -webkit-flex;
+    display: flex;
 }
 </style>
