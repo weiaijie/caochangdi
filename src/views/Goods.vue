@@ -82,7 +82,8 @@ export default {
       goods: {
         id: '',
         imgUrl: []
-      }
+      },
+      label: ''
     }
   },
   created() {
