@@ -220,6 +220,9 @@ export default {
   padding: 10px 0;
   text-align: center;
 }
+.goods_cur{
+  position:relative;
+}
 
 .goods_cur:before {
   content: " ";
@@ -241,6 +244,7 @@ export default {
   min-height: 40px;
   margin: 0 120px 5px 15px;
 }
+
 .goods_price {
   padding: 4px 100px 4px 15px;
 }
