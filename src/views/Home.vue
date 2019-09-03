@@ -324,47 +324,47 @@ export default {
             title: '今日上新',
             meta: '就问你来不来',
             imgUrl: './img/mod_channel_nav1.png',
-            href:'1'
+            href:'#'
           },
           {
             title: '腾讯独家',
             meta: '宇宙仅此一家',
             imgUrl: './img/mod_channel_nav2.png',
-            href:'2'
+            href:'#'
           },
           {
             title: '手办专区',
             meta: '买手办到咩家',
             imgUrl: './img/mod_channel_nav3.png',
-            href:'3'
+            href:'#'
           },
           {
             title: '原著读物',
             meta: '热剧抢先看',
             imgUrl: './img/mod_channel_nav4.png',
-            href:'4'
+            href:'#'
           }
         ],
         ipList: [
           {
             title: '魔道祖师',
             imgUrl: './img/mod_channel_nav5.png',
-            href:'5'
+            href:'#'
           },
           {
             title: 'QQ黄金鹅',
             imgUrl: './img/mod_channel_nav6.png',
-            href:'6'
+            href:'#'
           },
           {
             title: '陈情令年卡',
             imgUrl: './img/mod_channel_nav7.png',
-            href:'7'
+            href:'#'
           },
           {
             title: '早鸟票',
             imgUrl: './img/mod_channel_nav8.png',
-            href:'8'
+            href:'#'
           }
         ]
       },
@@ -468,7 +468,6 @@ export default {
 
     //秒杀活动 时间获取
     let a = new Date()
-    console.clear()
     if(a.getHours() >= 10 && a.getHours() < 20){
       this.goods.countDown.futureTime1 = '20:00'
       this.goods.countDown.futureTime2 = '10:00'
@@ -520,7 +519,10 @@ export default {
   methods: {
     routerJump(url){
       console.log(url)
-      this.$router.push(url)
+      if(url !== '#'){
+        this.$router.push(url)
+      }
+      
     },
     //秒杀选定状态切换
     spikeList(e){
@@ -556,13 +558,15 @@ export default {
         this.goods.spikeGoods.sort()
         this.goods.spikeGoods[2] = []
         let a = new Date()
+        console.log(this.goods.countDown.futureTime1)
+        console.log(a.getHours())
         if(a.getHours() >= 10 && a.getHours() < 20){
           this.goods.countDown.futureTime1 = '20:00'
           this.goods.countDown.futureTime2 = '10:00'
         }
         // console.log(this.goods.countDown.time)
-        if(a.getHours() > 20){
-        this.goods.countDown.time = Date.parse(new Date(`${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${this.goods.countDown.futureTime1}`)) + (3600000 * 24) - a.getTime()
+        if(a.getHours() >= 20){
+          this.goods.countDown.time = Date.parse(new Date(`${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${this.goods.countDown.futureTime1}`)) + (3600000 * 24) - a.getTime()
         }else{
           this.goods.countDown.time = Date.parse(new Date(`${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${this.goods.countDown.futureTime1}`)) - a.getTime()
         }
