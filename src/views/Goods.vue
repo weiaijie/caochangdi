@@ -2,7 +2,7 @@
   <div class="goods">
     <div class="mod_section">
       <div class="mod_swiper_poster">
-        <div class="swiper_poster">
+        <div v-if="goods.imgUrl.length >= 1" class="swiper_poster">
           <van-swipe @change="onChange">
             <van-swipe-item v-for="(item,index) in goods.imgUrl" :key="index">
               <div class="poster_pic">
@@ -13,6 +13,9 @@
               <span>{{ current + 1 }}</span> / <span>{{goods.imgUrl.length}}</span>
             </div>
           </van-swipe>
+        </div>
+        <div v-else class="poster_pic">
+          <van-loading type="spinner" />
         </div>
       </div>
       <div class="goods_price goods_cur">
@@ -69,19 +72,24 @@
       </div>
       <div></div>
     </div>
-    
+    <MoreGoods></MoreGoods>
   </div>
 </template>
 
 <script>
+import MoreGoods from './components/more-goods';
 export default {
   name: 'goods',
+  components: {
+    MoreGoods
+  },
   data() {
     return {
       current: 0,
       goods: {
         id: '',
-        imgUrl: []
+        imgUrl: [],
+        
       }
     }
   },
@@ -137,6 +145,13 @@ export default {
       left: 0;
       width: 100%;
       height: 100%;
+    }
+    .van-loading{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: -15px 0 0 -15px;
+      font-style: italic;
     }
   }
   .poster_pic:before {

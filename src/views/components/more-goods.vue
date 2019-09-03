@@ -57,7 +57,7 @@ export default {
         }
     },
     created() {
-      for(let i = 0; i < 4; i++){
+      for(let i = 0; i < 8; i++){
         this.moreGoods.push({
           id: i+1,
           imgUrl: `./img/goods/480_480(${i+1}).png`,
