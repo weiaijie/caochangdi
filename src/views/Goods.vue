@@ -38,8 +38,9 @@
       </div>
     </div>
     <div class="mod_section"></div>
+
     <div class="mod_section">
-      <div class="mod_tit">
+      <!-- <div class="mod_tit">
         <h3 class="tit_normal">
           <span class="tit">快把我哥带走</span>
         </h3>
@@ -47,8 +48,9 @@
           <span class="more_txt">更多</span>
           <van-icon name="arrow" class="icon_sm" color="#999" size="16px" style="font-weight: 600;"/>
         </span>
-      </div>
+      </div> -->
     </div>
+
     <div class="mod_section">
       <div class="mod_tit">
         <h3 class="tit_normal">
@@ -73,11 +75,47 @@
       <div></div>
     </div>
     <MoreGoods></MoreGoods>
+
+    <div class="nav_fixed" :style="navId == 0 ? 'display:none' : ''">
+      <div class="nav_fixed_inner">
+        <ul class="nav_list">
+          <li
+            v-for="(item, index) in navList" 
+            :class="navId == index ? 'nav_item current' : 'nav_item'" 
+            :key="index"
+            @click="anchor(index)" >{{item}}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mod_fix_cart">
+      <div class="fix_cart">
+        <span class="btn_home" @click.once="routerJump('/')">
+          <van-icon name="wap-home" class="icon" color="#15d3a6" />
+          <span class="icon_txt">首页</span>
+        </span>
+        <span class="btn_service">
+          <van-icon name="service" class="icon" />
+          <span class="icon_txt">客服</span>
+        </span>
+        <span class="btn_cart">
+          <van-icon name="cart-o" class="icon" info="2" />
+          <span class="icon_txt">购物车</span>
+        </span>
+        <span class="btn_addcart">
+          加入购物车
+        </span>
+        <span class="btn_buy">
+          立即购买
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import MoreGoods from './components/more-goods';
+import { constants } from 'crypto';
 export default {
   name: 'goods',
   components: {
@@ -88,25 +126,63 @@ export default {
       current: 0,
       goods: {
         id: '',
-        imgUrl: [],
-        
-      }
+        title: '【预售】《全职高手之巅峰荣耀》大电影 亚克力立牌摆件',
+        imgUrl: []
+      },
+      navId: 0,
+      navList: ['商品','评价','详情','推荐']
     }
   },
   created() {
-
+    document.title = this.goods.title
     for(let i = 16; i < 22; i++){
       this.goods.imgUrl.push(`./img/goods/480_480(${i}).png`)
     }
     // console.log(this.$router.push())
-    // event.currentTarget.offsetTop
+  },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll)
   },
   methods: {
     onChange(index) {
-      this.current = index;
+      this.current = index
     },
     routerJump(url) {
-      console.log(url);
+      this.$router.push(url)
+    },
+    anchor(id) {
+      //先移除滑动监听事件 在延迟执行监听事件 不然会有bug
+      window.removeEventListener('scroll', this.handleScroll)
+      this.navId = id
+      if(id == 0){
+        document.documentElement.scrollTop = 0
+      }else{
+        document.documentElement.scrollTop = document.getElementsByClassName('mod_section')[id + 2].offsetTop - 48
+      }
+      setTimeout(() => {
+        window.addEventListener('scroll', this.handleScroll)
+      },200)
+      
+    },
+    handleScroll() {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      // 判断三个模块的位置
+      let comment = document.getElementsByClassName('mod_section')[3].offsetTop - scrollTop - 48
+      let prodetail= document.getElementsByClassName('mod_section')[4].offsetTop - scrollTop
+      let recommend = document.getElementsByClassName('mod_section')[5].offsetTop - scrollTop
+      if(comment <= 0) {
+        if(prodetail <= 0){
+          if(recommend <= 0){
+            this.navId = 3
+          }else{
+            this.navId = 2
+          }
+        }else{
+          this.navId = 1
+        }
+      }else{
+        this.navId = 0
+      }
     }
   }
 }
@@ -306,4 +382,145 @@ export default {
     display: -webkit-flex;
     display: flex;
 }
+
+//顶部悬浮
+.nav_fixed {
+    position: fixed;
+    z-index: 11;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 48px;
+    background: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    box-shadow: 0 0 6px 0 rgba(0,0,0,.06);
+    .nav_fixed_inner {
+      padding: 0 20px;
+    }
+    .nav_list {
+      width: 100%;
+      font-size: 0;
+      letter-spacing: -3px;
+    }
+    .nav_item {
+      position: relative;
+      display: inline-block;
+      width: 25%;
+      font-size: 14px;
+      line-height: 48px;
+      color: #666;
+      letter-spacing: normal;
+      text-align: center;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+    .nav_item.current:before {
+      position: absolute;
+      content: ' ';
+      font-size: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: 0 auto;
+      width: 24px;
+      height: 2px;
+      background-color: #15d3a6;
+    }
+}
+
+
+//底部悬浮
+.mod_fix_cart {
+  position: fixed;
+  z-index: 11;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  background: #fff;
+  padding-bottom: calc(constant(safe-area-inset-bottom));
+  padding-bottom: calc(env(safe-area-inset-bottom));
+  -webkit-animation: accelerateAnim .1s both;
+  .fix_cart {
+    display: -webkit-flex;
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 50px;
+    box-shadow: 0 -2px 4px 0 rgba(0,0,0,.02), 0 -6px 8px 0 rgba(0,0,0,.02);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-left: 10px;
+  }
+  .icon{
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin: 6px auto 1px;
+  }
+  .icon::before{
+    font-size: 21px;
+  }
+  .icon_txt{
+    display: block;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+  }
+  .btn_cart, .btn_home, .btn_service {
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto;
+    color: #333;
+  } 
+  .btn_cart {
+    margin-right: 10px;
+  }
+  .btn_addcart {
+    -webkit-flex: 2 1 auto;
+    flex: 2 1 auto;
+    font-size: 15px;
+    line-height: 50px;
+    text-align: center;
+    color: #0c7;
+    background: #dffef2;
+    background: -webkit-linear-gradient(left,#dffef2 0,#a6ffdb 100%);
+    background: linear-gradient(to right,#dffef2 0,#a6ffdb 100%);
+  }
+  .btn_buy {
+    -webkit-flex: 2 1 auto;
+    flex: 2 1 auto;
+    font-size: 15px;
+    line-height: 50px;
+    text-align: center;
+    position: relative;
+    color: #fff;
+    background: #00d855;
+    background: -webkit-linear-gradient(left,#00d855 0,#00d0cc 100%);
+    background: linear-gradient(to right,#00d855 0,#00d0cc 100%);
+  }
+  .btn_buy:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    border-left: 1px solid #ddd;
+    -webkit-transform: scaleX(.5);
+    -webkit-transform-origin: 0 0;
+  }
+  .fix_cart:after {
+    content: "";
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: -1px;
+    border-bottom: 1px solid #ddd;
+    -webkit-transform: scaleY(.5);
+    -webkit-transform-origin: 0 0;
+  }
+}
+
+
+
+
 </style>
