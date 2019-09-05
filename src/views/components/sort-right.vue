@@ -92,9 +92,10 @@ export default {
     }
   },
 	mounted(){
-    this.initBscroll()
+		this.initBscroll()
 	},
 	beforeDestroy() {
+
 	},
   methods: {
   	routerJump(url){
@@ -160,7 +161,7 @@ export default {
   		})
   
   	},
-  	//推荐假数据
+  	//分类假数据
   	commend(name) {
   		let newGoods = []
       for(let i = 0; i < 20; i++){
