@@ -10,6 +10,7 @@ const Trolley = () => import(/* webpackChunkName: "group-foo" */ './views/Trolle
 const Mine = () => import(/* webpackChunkName: "group-foo" */ './views/Mine.vue')
 const Index = () => import(/* webpackChunkName: "group-foo" */ './views/index.vue')
 const Goods = () => import(/* webpackChunkName: "group-foo" */ './views/Goods.vue')
+const Login = () => import(/* webpackChunkName: "group-foo" */ './views/login/index.vue')
 const error = () => import(/* webpackChunkName: "group-foo" */ './views/404.vue')
 
 const router = new Router({
@@ -57,7 +58,10 @@ const router = new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Index
+      meta: {
+        title: '登陆'
+      },
+      component: Login
     },
     {
       path: '/detail',
@@ -75,7 +79,10 @@ const router = new Router({
       },
       component: error
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
 })
 
 router.beforeEach((to, from, next) => {
