@@ -16,7 +16,7 @@
 		</div>
 		<div class="mod_auto_both">
 			<div ref="scrollerleft" class="mod_auto_side">
-				<div class="scroller">
+				<div class="scroller" style="padding-bottom: 60px;">
 					<div v-for="(item, index) of sortNav" :key="index" class="sort_nav">
 						<div class="nav_tit">
 							<span class="tit">{{index}}</span>
