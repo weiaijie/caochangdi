@@ -284,38 +284,38 @@ export default {
       cateListData: [
         {
           name: '魔道祖师',
-          href: 'https://cy.qq.com/mall/cy/iwCWpLDR.html?ptag=from%3Abanner%3Bhd%3A1239&amp;ptag'
+          href: '#'
         },
         {
           name: '全职高手',
-          href: 'https://mall.video.qq.com/activity_shelf_page?iPageId=207'
+          href: '#'
         }
       ],
       modSwiperCards: [
         {
           alt: '1',
           url: './img/mod_swiper_card1.png',
-          href: 'mod_swiper_card1'
+          href: '#'
         },
         {
           alt: '2',
           url: './img/mod_swiper_card2.png',
-          href: 'mod_swiper_card2'
+          href: '#'
         },
         {
           alt: '3',
           url: './img/mod_swiper_card3.png',
-          href: 'mod_swiper_card3'
+          href: '#'
         },
         {
           alt: '4',
           url: './img/mod_swiper_card4.png',
-          href: 'mod_swiper_card4'
+          href: '#'
         },
         {
           alt: '5',
           url: './img/mod_swiper_card5.png',
-          href: 'mod_swiper_card5'
+          href: '#'
         }
       ],
       modChannelNav: {
@@ -394,7 +394,6 @@ export default {
     
   },
   created(){
-
     //<!-- 活动 魔道祖师羨云篇周边 -->
     for(let i = 0; i < 9; i++){
       this.goods.activityGoods.push({
@@ -518,7 +517,6 @@ export default {
   },
   methods: {
     routerJump(url){
-      console.log(url)
       if(url !== '#'){
         this.$router.push(url)
       }
